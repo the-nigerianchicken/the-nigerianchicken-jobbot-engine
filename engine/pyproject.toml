@@ -1,0 +1,77 @@
+[project]
+name = "jobbot-engine"
+description = "jobbot's engine: checks sources, applies each person's rules, reports to the app"
+requires-python = ">=3.12,<3.13"
+dynamic = ["version"]
+dependencies = [
+    "requests>=2.32",
+    "python-dateutil>=2.9",
+    # jsonschema checks a format only when its checker's library is installed: these are the contract's
+    # date-time and uri (uuid needs none). The format-nongpl extra also brought an IRI checker that took
+    # 1.2 seconds to import, more than a quiet run's whole work.
+    "jsonschema>=4.23",
+    "rfc3339-validator>=0.1.4",
+    "rfc3986-validator>=0.1.1",
+]
+
+[project.scripts]
+jobbot-engine = "jobbot_engine.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-cov>=5",
+    "ruff>=0.6",
+    "pyright>=1.1.380",
+    "pyyaml>=6",
+    "types-pyyaml>=6",
+]
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "../VERSION"
+pattern = "(?P<version>.+)"
+
+# The version is read from ../VERSION at build time, so a change to it must rebuild the installed engine.
+[tool.uv]
+cache-keys = [{ file = "pyproject.toml" }, { file = "../VERSION" }]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jobbot_engine"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+# Ranges are written with an en dash ("1–3 days"), as the app shows them.
+allowed-confusables = ["–"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["jobbot_engine"]
+
+[tool.pyright]
+typeCheckingMode = "strict"
+include = ["src", "tests", "devtools", "../tools", "../infra"]
+# src: the engine itself (pyright stops adding it on its own once extraPaths is set).
+# devtools: the tests import the stub API from it.
+# ../tools: the hooks import tools/check.py after putting tools/ on the path at run time.
+# ../infra: its tests import git_bash.py the same way.
+extraPaths = ["src", "devtools", "../tools", "../infra"]
+pythonVersion = "3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = [
+    "live: calls the real Claude command-line tool; runs only with JOBBOT_LIVE=1",
+    "worker: runs against a local Worker; runs only with JOBBOT_WORKER_URL (python tools/check.py integration)",
+]
+
+[tool.coverage.run]
+# Python 3.12's monitoring API: the default tracer made the memory test four times slower.
+core = "sysmon"

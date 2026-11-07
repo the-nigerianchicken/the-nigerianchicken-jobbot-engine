@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/postings-batch.json",
+  "title": "PostingsBatch",
+  "description": "What the engine sends after checking sources (POST /engine/postings): new or changed postings, its decisions, and postings that closed. At most 100 of each, so one request stays inside the Worker's free computing limit.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["postings", "decisions", "closed"],
+  "properties": {
+    "postings": { "type": "array", "items": { "$ref": "posting.json" }, "maxItems": 100 },
+    "decisions": { "type": "array", "items": { "$ref": "decision.json" }, "maxItems": 100 },
+    "closed": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["posting_id", "closed_at"],
+        "properties": {
+          "posting_id": { "$ref": "defs.json#/$defs/posting_id" },
+          "closed_at": { "$ref": "defs.json#/$defs/timestamp" }
+        }
+      }
+    }
+  }
+}

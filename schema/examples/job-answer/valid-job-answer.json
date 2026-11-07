@@ -1,0 +1,18 @@
+{
+  "status": "done",
+  "result": {
+    "window_days": 30,
+    "leaving_new": [
+      {
+        "posting_id": "0123456789abcdef",
+        "company": "Example Robotics",
+        "title": "Software Engineering Intern, Summer 2027",
+        "rule_name": "Places"
+      }
+    ],
+    "newly_flagged": [],
+    "returning": [],
+    "collected_more": 0
+  },
+  "error": null
+}

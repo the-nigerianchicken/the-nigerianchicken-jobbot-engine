@@ -1,0 +1,12 @@
+{
+  "user_id": "u_test",
+  "posting_id": "0123456789abcdef",
+  "state": "new",
+  "rule_id": null,
+  "rule_name": null,
+  "matched": [],
+  "settings_version": 3,
+  "evaluated_at": "2026-10-01T15:35:00Z",
+  "alert_reason": null,
+  "notes": []
+}

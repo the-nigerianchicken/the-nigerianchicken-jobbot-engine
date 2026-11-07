@@ -1,0 +1,20 @@
+{
+  "id": "0123456789abcdef",
+  "source_id": "greenhouse:example-robotics",
+  "external_id": "4012345",
+  "company": "Example Robotics",
+  "title": "Software Engineering Intern, Summer 2027",
+  "location": "Austin, TX",
+  "url": "https://boards.greenhouse.io/example-robotics/jobs/4012345",
+  "apply_url": "https://boards.greenhouse.io/example-robotics/jobs/4012345#app",
+  "posted_at": "2026-10-01T15:30:00Z",
+  "deadline": null,
+  "remote": false,
+  "terms": [
+    "Summer 2027"
+  ],
+  "description": "Build fleet tooling with the platform team. Open to students graduating in 2027 or 2028.",
+  "first_seen_at": "2026-10-01T15:34:00Z",
+  "closed_at": null,
+  "content_hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+}
