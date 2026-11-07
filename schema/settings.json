@@ -1,0 +1,391 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/settings.json",
+  "title": "Settings",
+  "description": "One person's settings: their details, the rules that decide which jobs they see, their alert rules and how the app looks. Versioned, so the engine knows which settings a decision was made under.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "updated_at",
+    "details",
+    "rules",
+    "alert_rules",
+    "display",
+    "misses",
+    "quiet_hours"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "updated_at": {
+      "$ref": "defs.json#/$defs/timestamp"
+    },
+    "details": {
+      "$ref": "#/$defs/details"
+    },
+    "rules": {
+      "$ref": "#/$defs/rules"
+    },
+    "alert_rules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/alert_rule"
+      },
+      "maxItems": 50
+    },
+    "display": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["order", "grouping", "theme"],
+      "properties": {
+        "order": {
+          "enum": ["newest", "followed_first"]
+        },
+        "grouping": {
+          "enum": ["none", "company", "day"]
+        },
+        "theme": {
+          "enum": ["system", "light", "dark"]
+        },
+        "filters": {
+          "description": "The filter chips over a list, in the order shown. Left out: all of them.",
+          "type": "array",
+          "items": {
+            "enum": ["location", "role", "found", "company", "followed"]
+          },
+          "uniqueItems": true
+        },
+        "places": {
+          "description": "Your places, first in a list's Location filter, each one tap to choose. Left out: the home country and Remote.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "maxItems": 20,
+          "uniqueItems": true
+        }
+      }
+    },
+    "misses": {
+      "description": "When a GitHub list has a posting from a company not covered: add its board, or ask first",
+      "enum": ["add", "ask"]
+    },
+    "quiet_hours": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "start", "end", "time_zone"],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "start": {
+          "$ref": "#/$defs/clock"
+        },
+        "end": {
+          "$ref": "#/$defs/clock"
+        },
+        "time_zone": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      }
+    }
+  },
+  "$defs": {
+    "rules": {
+      "title": "Rules",
+      "description": "The rules that decide which jobs are shown, in the order schema/data/rules.json gives: the first that hides a job names it. A rule that's off, or has nothing chosen, hides nothing.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "companies",
+        "ruled_out",
+        "roles",
+        "places",
+        "terms",
+        "sponsorship",
+        "age",
+        "repeats"
+      ],
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/kind_rule"
+        },
+        "companies": {
+          "$ref": "#/$defs/companies_rule"
+        },
+        "ruled_out": {
+          "$ref": "#/$defs/ruled_out_rule"
+        },
+        "roles": {
+          "$ref": "#/$defs/roles_rule"
+        },
+        "places": {
+          "$ref": "#/$defs/places_rule"
+        },
+        "terms": {
+          "$ref": "#/$defs/terms_rule"
+        },
+        "sponsorship": {
+          "$ref": "#/$defs/sponsorship_rule"
+        },
+        "age": {
+          "$ref": "#/$defs/age_rule"
+        },
+        "repeats": {
+          "$ref": "#/$defs/repeats_rule"
+        }
+      }
+    },
+    "choices": {
+      "description": "Names from the catalogue (schema/data/rules.json or places.json)",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 80
+      },
+      "uniqueItems": true,
+      "maxItems": 300
+    },
+    "kind_rule": {
+      "title": "KindRule",
+      "description": "Only jobs whose title has a word of a chosen kind, or one of the person's own words, are collected.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["on", "chosen", "words"],
+      "properties": {
+        "on": {
+          "type": "boolean"
+        },
+        "chosen": {
+          "$ref": "#/$defs/choices"
+        },
+        "words": {
+          "$ref": "defs.json#/$defs/word_list"
+        }
+      }
+    },
+    "companies_rule": {
+      "title": "CompaniesRule",
+      "description": "Jobs at a company named by these words are hidden.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["on", "words"],
+      "properties": {
+        "on": {
+          "type": "boolean"
+        },
+        "words": {
+          "$ref": "defs.json#/$defs/word_list"
+        }
+      }
+    },
+    "ruled_out_rule": {
+      "title": "RuledOutRule",
+      "description": "Jobs with a chosen group's words or the person's own words in the title are hidden. A word inside a longer role word doesn't count (\"staff\" in \"Member of Technical Staff\").",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["on", "chosen", "words"],
+      "properties": {
+        "on": {
+          "type": "boolean"
+        },
+        "chosen": {
+          "$ref": "#/$defs/choices"
+        },
+        "words": {
+          "$ref": "defs.json#/$defs/word_list"
+        }
+      }
+    },
+    "roles_rule": {
+      "title": "RolesRule",
+      "description": "Only jobs whose title has a chosen role's words, or one of the person's own words, are shown.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["on", "chosen", "words"],
+      "properties": {
+        "on": {
+          "type": "boolean"
+        },
+        "chosen": {
+          "$ref": "#/$defs/choices"
+        },
+        "words": {
+          "$ref": "defs.json#/$defs/word_list"
+        }
+      }
+    },
+    "places_rule": {
+      "title": "PlacesRule",
+      "description": "Jobs whose place names only countries not chosen (countries or regions) are hidden. A place with no country jobbot recognises is shown, and a remote one is shown while `remote` is on.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["on", "chosen", "remote"],
+      "properties": {
+        "on": {
+          "type": "boolean"
+        },
+        "chosen": {
+          "$ref": "#/$defs/choices"
+        },
+        "remote": {
+          "type": "boolean"
+        }
+      }
+    },
+    "terms_rule": {
+      "title": "TermsRule",
+      "description": "Jobs that name only terms not chosen are hidden. A job that names no term is shown.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["on", "chosen"],
+      "properties": {
+        "on": {
+          "type": "boolean"
+        },
+        "chosen": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(Winter|Spring|Summer|Fall) 20[0-9]{2}$"
+          },
+          "uniqueItems": true,
+          "maxItems": 40
+        }
+      }
+    },
+    "sponsorship_rule": {
+      "title": "SponsorshipRule",
+      "description": "Jobs outside the person's home country whose description says it won't sponsor a visa are hidden, while their details say they need one. `words` are phrases besides the catalogue's.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["on", "words"],
+      "properties": {
+        "on": {
+          "type": "boolean"
+        },
+        "words": {
+          "$ref": "defs.json#/$defs/word_list"
+        }
+      }
+    },
+    "age_rule": {
+      "title": "AgeRule",
+      "description": "Jobs already this many days old when jobbot first found them are hidden, except at companies the person follows. A job with no posted date is shown.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["on", "days"],
+      "properties": {
+        "on": {
+          "type": "boolean"
+        },
+        "days": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 365
+        }
+      }
+    },
+    "repeats_rule": {
+      "title": "RepeatsRule",
+      "description": "A job jobbot already shows is shown once: another copy of it is hidden, naming where the job is shown. A copy on the same board is one with the same company, title and place; on another board or list, the same company and title.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["on"],
+      "properties": {
+        "on": {
+          "type": "boolean"
+        }
+      }
+    },
+    "clock": {
+      "type": "string",
+      "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+    },
+    "rule_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "details": {
+      "title": "Details",
+      "description": "Facts about the person that the filters compare postings against",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "home_country",
+        "citizenships",
+        "needs_sponsorship_outside_home",
+        "security_clearance",
+        "degree",
+        "field_of_study",
+        "graduation_month"
+      ],
+      "properties": {
+        "home_country": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "citizenships": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "maxItems": 10
+        },
+        "needs_sponsorship_outside_home": {
+          "type": "boolean"
+        },
+        "security_clearance": {
+          "type": "boolean"
+        },
+        "degree": {
+          "enum": ["high_school", "bachelor", "master", "phd"]
+        },
+        "field_of_study": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "graduation_month": {
+          "$ref": "defs.json#/$defs/month"
+        }
+      }
+    },
+    "alert_rule": {
+      "title": "AlertRule",
+      "description": "Buzz the phone when a posting's field has one of the words",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "enabled", "field", "words"],
+      "properties": {
+        "id": {
+          "$ref": "defs.json#/$defs/rule_id"
+        },
+        "name": {
+          "$ref": "#/$defs/rule_name"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "field": {
+          "$ref": "defs.json#/$defs/rule_field"
+        },
+        "words": {
+          "$ref": "defs.json#/$defs/words"
+        }
+      }
+    }
+  }
+}

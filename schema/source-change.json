@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/source-change.json",
+  "title": "SourceChange",
+  "description": "A change to how a person uses one of their sources: how often it's checked, or paused.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [],
+  "properties": {
+    "frequency_minutes": {
+      "enum": [5, 15, 60, 1440]
+    },
+    "paused": {
+      "type": "boolean"
+    }
+  },
+  "minProperties": 1
+}

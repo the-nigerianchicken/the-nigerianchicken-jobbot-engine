@@ -1,0 +1,1352 @@
+{
+  "description": "Settings written before plain rules (the first rules, a typed list, or filters), and the plain rules the engine (upgrade.py) and the app (upgrade.ts) both turn them into.",
+  "cases": [
+    {
+      "name": "old rules: the schema's old example",
+      "from": {
+        "rules": [
+          {
+            "id": "r_role_kinds",
+            "type": "role_kinds",
+            "name": "Kinds of role",
+            "enabled": true,
+            "action": "keep_only",
+            "params": {
+              "kinds": ["internship", "co_op"],
+              "words": {
+                "internship": ["intern", "internship"],
+                "co_op": ["co-op"],
+                "new_grad": ["new grad"]
+              }
+            }
+          },
+          {
+            "id": "r_terms",
+            "type": "terms",
+            "name": "Terms",
+            "enabled": true,
+            "action": "keep_only",
+            "params": {
+              "wanted": ["summer 2027", "fall 2027"],
+              "unwanted": ["summer 2026"],
+              "keep_when_no_term": true
+            }
+          },
+          {
+            "id": "r_role_words",
+            "type": "role_words",
+            "name": "Role words",
+            "enabled": true,
+            "action": "keep_only",
+            "params": {
+              "words": ["software", "developer", "data"]
+            }
+          },
+          {
+            "id": "r_ruled_out",
+            "type": "ruled_out_words",
+            "name": "Words that rule a posting out",
+            "enabled": true,
+            "action": "remove",
+            "params": {
+              "words": ["senior", "staff", "sales"]
+            }
+          },
+          {
+            "id": "r_places",
+            "type": "places",
+            "name": "Places",
+            "enabled": true,
+            "action": "keep_only",
+            "params": {
+              "allowed_countries": ["ireland", "united states"],
+              "allowed_regions": ["tx", "dublin"],
+              "home_markers": ["ireland"],
+              "excluded": ["berlin"],
+              "preferred": ["dublin"],
+              "keep_unknown": true
+            }
+          },
+          {
+            "id": "r_graduation",
+            "type": "graduation",
+            "name": "Graduation date",
+            "enabled": true,
+            "action": "remove",
+            "params": {
+              "earliest": "2028-02",
+              "latest": "2028-08"
+            }
+          },
+          {
+            "id": "r_sponsorship",
+            "type": "sponsorship",
+            "name": "Sponsorship",
+            "enabled": true,
+            "action": "remove",
+            "params": {
+              "phrases": ["no visa sponsorship"]
+            }
+          },
+          {
+            "id": "r_eligibility",
+            "type": "eligibility_check",
+            "name": "Eligibility check by Claude",
+            "enabled": true,
+            "action": "remove",
+            "params": {
+              "judge": ["citizenship", "clearance", "degree"]
+            }
+          },
+          {
+            "id": "r_hidden",
+            "type": "hidden_companies",
+            "name": "Companies you hide",
+            "enabled": true,
+            "action": "remove",
+            "params": {
+              "companies": ["Example Staffing"]
+            }
+          },
+          {
+            "id": "r_age",
+            "type": "age",
+            "name": "Age",
+            "enabled": true,
+            "action": "remove",
+            "params": {
+              "max_hours": 24,
+              "max_hours_followed": 72
+            }
+          },
+          {
+            "id": "r_borderline",
+            "type": "custom",
+            "name": "Borderline roles",
+            "enabled": true,
+            "action": "flag",
+            "params": {
+              "field": "title",
+              "words": ["solutions engineer"]
+            }
+          }
+        ]
+      },
+      "rules": {
+        "kind": {
+          "on": true,
+          "chosen": ["Internship", "Co-op"],
+          "words": []
+        },
+        "companies": {
+          "on": true,
+          "words": ["Example Staffing"]
+        },
+        "ruled_out": {
+          "on": true,
+          "chosen": ["Senior", "Staff"],
+          "words": ["sales"]
+        },
+        "roles": {
+          "on": true,
+          "chosen": ["Software", "Data"],
+          "words": []
+        },
+        "places": {
+          "on": true,
+          "chosen": ["United States", "Ireland"],
+          "remote": true
+        },
+        "terms": {
+          "on": true,
+          "chosen": ["Summer 2027", "Fall 2027"]
+        },
+        "sponsorship": {
+          "on": true,
+          "words": []
+        },
+        "age": {
+          "on": true,
+          "days": 7
+        },
+        "repeats": {
+          "on": true
+        }
+      }
+    },
+    {
+      "name": "old rules: every rule off",
+      "from": {
+        "rules": [
+          {
+            "id": "r_role_kinds",
+            "type": "role_kinds",
+            "name": "Kinds of role",
+            "enabled": false,
+            "action": "keep_only",
+            "params": {
+              "kinds": ["internship", "co_op"],
+              "words": {
+                "internship": ["intern", "internship"],
+                "co_op": ["co-op"],
+                "new_grad": ["new grad"]
+              }
+            }
+          },
+          {
+            "id": "r_terms",
+            "type": "terms",
+            "name": "Terms",
+            "enabled": false,
+            "action": "keep_only",
+            "params": {
+              "wanted": ["summer 2027", "fall 2027"],
+              "unwanted": ["summer 2026"],
+              "keep_when_no_term": true
+            }
+          },
+          {
+            "id": "r_role_words",
+            "type": "role_words",
+            "name": "Role words",
+            "enabled": false,
+            "action": "keep_only",
+            "params": {
+              "words": ["software", "developer", "data"]
+            }
+          },
+          {
+            "id": "r_ruled_out",
+            "type": "ruled_out_words",
+            "name": "Words that rule a posting out",
+            "enabled": false,
+            "action": "remove",
+            "params": {
+              "words": ["senior", "staff", "sales"]
+            }
+          },
+          {
+            "id": "r_places",
+            "type": "places",
+            "name": "Places",
+            "enabled": false,
+            "action": "keep_only",
+            "params": {
+              "allowed_countries": ["ireland", "united states"],
+              "allowed_regions": ["tx", "dublin"],
+              "home_markers": ["ireland"],
+              "excluded": ["berlin"],
+              "preferred": ["dublin"],
+              "keep_unknown": true
+            }
+          },
+          {
+            "id": "r_graduation",
+            "type": "graduation",
+            "name": "Graduation date",
+            "enabled": false,
+            "action": "remove",
+            "params": {
+              "earliest": "2028-02",
+              "latest": "2028-08"
+            }
+          },
+          {
+            "id": "r_sponsorship",
+            "type": "sponsorship",
+            "name": "Sponsorship",
+            "enabled": false,
+            "action": "remove",
+            "params": {
+              "phrases": ["no visa sponsorship"]
+            }
+          },
+          {
+            "id": "r_eligibility",
+            "type": "eligibility_check",
+            "name": "Eligibility check by Claude",
+            "enabled": false,
+            "action": "remove",
+            "params": {
+              "judge": ["citizenship", "clearance", "degree"]
+            }
+          },
+          {
+            "id": "r_hidden",
+            "type": "hidden_companies",
+            "name": "Companies you hide",
+            "enabled": false,
+            "action": "remove",
+            "params": {
+              "companies": ["Example Staffing"]
+            }
+          },
+          {
+            "id": "r_age",
+            "type": "age",
+            "name": "Age",
+            "enabled": false,
+            "action": "remove",
+            "params": {
+              "max_hours": 24,
+              "max_hours_followed": 72
+            }
+          },
+          {
+            "id": "r_borderline",
+            "type": "custom",
+            "name": "Borderline roles",
+            "enabled": false,
+            "action": "flag",
+            "params": {
+              "field": "title",
+              "words": ["solutions engineer"]
+            }
+          }
+        ]
+      },
+      "rules": {
+        "kind": {
+          "on": false,
+          "chosen": [],
+          "words": []
+        },
+        "companies": {
+          "on": false,
+          "words": []
+        },
+        "ruled_out": {
+          "on": false,
+          "chosen": [],
+          "words": []
+        },
+        "roles": {
+          "on": false,
+          "chosen": [],
+          "words": []
+        },
+        "places": {
+          "on": false,
+          "chosen": [],
+          "remote": true
+        },
+        "terms": {
+          "on": false,
+          "chosen": []
+        },
+        "sponsorship": {
+          "on": false,
+          "words": []
+        },
+        "age": {
+          "on": false,
+          "days": 7
+        },
+        "repeats": {
+          "on": true
+        }
+      }
+    },
+    {
+      "name": "old rules: flags, years, a code after a comma and no term kept out",
+      "from": {
+        "rules": [
+          {
+            "id": "r_role_kinds",
+            "type": "role_kinds",
+            "name": "Kinds of role",
+            "enabled": true,
+            "action": "keep_only",
+            "params": {
+              "kinds": ["internship", "new_grad"],
+              "words": {
+                "internship": ["intern", "internship"],
+                "co_op": ["co-op"],
+                "new_grad": ["new grad"]
+              }
+            }
+          },
+          {
+            "id": "r_terms",
+            "type": "terms",
+            "name": "Terms",
+            "enabled": true,
+            "action": "keep_only",
+            "params": {
+              "wanted": ["2027", "Autumn 2026*"],
+              "unwanted": ["summer 2026", "2025"],
+              "keep_when_no_term": false
+            }
+          },
+          {
+            "id": "r_role_words",
+            "type": "role_words",
+            "name": "Role words",
+            "enabled": true,
+            "action": "keep_only",
+            "params": {
+              "words": ["machine learning*", "security engineer"]
+            }
+          },
+          {
+            "id": "r_ruled_out",
+            "type": "ruled_out_words",
+            "name": "Words that rule a posting out",
+            "enabled": true,
+            "action": "remove",
+            "params": {
+              "words": ["senior", "staff", "sales"]
+            }
+          },
+          {
+            "id": "r_places",
+            "type": "places",
+            "name": "Places",
+            "enabled": true,
+            "action": "keep_only",
+            "params": {
+              "allowed_countries": ["usa", "remote"],
+              "allowed_regions": ["on"],
+              "home_markers": ["ireland"],
+              "excluded": [],
+              "preferred": [],
+              "keep_unknown": false
+            }
+          },
+          {
+            "id": "r_graduation",
+            "type": "graduation",
+            "name": "Graduation date",
+            "enabled": true,
+            "action": "flag",
+            "params": {
+              "earliest": "2028-02",
+              "latest": "2028-08"
+            }
+          },
+          {
+            "id": "r_sponsorship",
+            "type": "sponsorship",
+            "name": "Sponsorship",
+            "enabled": true,
+            "action": "flag",
+            "params": {
+              "phrases": ["no visa sponsorship"]
+            }
+          },
+          {
+            "id": "r_eligibility",
+            "type": "eligibility_check",
+            "name": "Eligibility check by Claude",
+            "enabled": true,
+            "action": "flag",
+            "params": {
+              "judge": ["citizenship", "clearance", "degree"]
+            }
+          },
+          {
+            "id": "r_hidden",
+            "type": "hidden_companies",
+            "name": "Companies you hide",
+            "enabled": true,
+            "action": "remove",
+            "params": {
+              "companies": []
+            }
+          },
+          {
+            "id": "r_age",
+            "type": "age",
+            "name": "Age",
+            "enabled": true,
+            "action": "remove",
+            "params": {
+              "max_hours": 48,
+              "max_hours_followed": 48
+            }
+          },
+          {
+            "id": "r_borderline",
+            "type": "custom",
+            "name": "Borderline roles",
+            "enabled": true,
+            "action": "flag",
+            "params": {
+              "field": "title",
+              "words": ["solutions engineer"]
+            }
+          },
+          {
+            "id": "r_custom_1",
+            "type": "custom",
+            "name": "Only ML",
+            "enabled": true,
+            "action": "keep_only",
+            "params": {
+              "field": "title",
+              "words": ["ml"]
+            }
+          },
+          {
+            "id": "r_custom_2",
+            "type": "custom",
+            "name": "Not clinical",
+            "enabled": true,
+            "action": "remove",
+            "params": {
+              "field": "description",
+              "words": ["clinical"]
+            }
+          }
+        ]
+      },
+      "rules": {
+        "kind": {
+          "on": true,
+          "chosen": ["Internship", "New grad"],
+          "words": []
+        },
+        "companies": {
+          "on": false,
+          "words": []
+        },
+        "ruled_out": {
+          "on": true,
+          "chosen": ["Senior", "Staff"],
+          "words": ["sales"]
+        },
+        "roles": {
+          "on": true,
+          "chosen": ["Machine learning", "Security"],
+          "words": []
+        },
+        "places": {
+          "on": true,
+          "chosen": ["United States", "Canada"],
+          "remote": true
+        },
+        "terms": {
+          "on": true,
+          "chosen": [
+            "Winter 2027",
+            "Spring 2027",
+            "Summer 2027",
+            "Fall 2027",
+            "Fall 2026"
+          ]
+        },
+        "sponsorship": {
+          "on": false,
+          "words": []
+        },
+        "age": {
+          "on": true,
+          "days": 7
+        },
+        "repeats": {
+          "on": true
+        }
+      }
+    },
+    {
+      "name": "filters: the schema's old example",
+      "from": {
+        "filters": {
+          "attributes": {
+            "job_type": {
+              "hidden": [
+                "New grad",
+                "Apprenticeship",
+                "Part-time",
+                "Contract",
+                "Other"
+              ],
+              "shown": ["Internship", "Co-op"],
+              "new": "hide",
+              "words": {
+                "Internship": ["intern", "internship"],
+                "Co-op": ["co-op"],
+                "New grad": ["new grad"]
+              }
+            },
+            "field": {
+              "hidden": [
+                "Machine learning",
+                "Security",
+                "Hardware",
+                "Product",
+                "Design",
+                "Finance",
+                "Marketing",
+                "Sales",
+                "Operations",
+                "People",
+                "Legal",
+                "Other"
+              ],
+              "shown": ["Software", "Data"],
+              "new": "hide"
+            },
+            "level": {
+              "hidden": ["Senior", "Staff"],
+              "shown": [],
+              "new": "show"
+            },
+            "company": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "source": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "location": {
+              "hidden": [
+                "Canada",
+                "United Kingdom",
+                "India",
+                "Germany",
+                "France",
+                "Netherlands",
+                "Spain",
+                "Poland",
+                "Switzerland",
+                "Israel",
+                "China",
+                "Japan",
+                "Singapore",
+                "Australia",
+                "Mexico",
+                "Brazil",
+                "Taiwan",
+                "South Korea",
+                "Sweden",
+                "Denmark",
+                "Italy",
+                "Portugal",
+                "Romania",
+                "Czechia",
+                "Hungary",
+                "Philippines",
+                "Vietnam",
+                "Costa Rica",
+                "Argentina",
+                "Colombia",
+                "UAE",
+                "Malaysia",
+                "Belgium",
+                "Austria",
+                "Finland",
+                "Norway",
+                "Greece",
+                "Turkey",
+                "Egypt",
+                "South Africa",
+                "Nigeria",
+                "Kenya",
+                "Thailand",
+                "Indonesia",
+                "New Zealand",
+                "Chile",
+                "Peru",
+                "Hong Kong",
+                "Saudi Arabia",
+                "Luxembourg",
+                "Estonia",
+                "Ukraine",
+                "Serbia",
+                "Qatar",
+                "Pakistan"
+              ],
+              "shown": [
+                "Ireland",
+                "United States",
+                "Remote",
+                "Not recognised",
+                "Not given"
+              ],
+              "new": "hide"
+            },
+            "term": {
+              "hidden": ["Summer 2026"],
+              "shown": ["Summer 2027", "Fall 2027", "Not given"],
+              "new": "hide"
+            },
+            "age": {
+              "hidden": ["1–3 days", "4–14 days", "Older"],
+              "shown": [],
+              "new": "show"
+            },
+            "sponsorship": {
+              "hidden": ["Won't sponsor"],
+              "shown": [],
+              "new": "show",
+              "words": {
+                "Won't sponsor": ["no visa sponsorship"]
+              }
+            },
+            "requirements": {
+              "hidden": [
+                "Needs citizenship",
+                "Needs clearance",
+                "Needs another degree",
+                "Something you don't have"
+              ],
+              "shown": [],
+              "new": "show"
+            },
+            "graduation": {
+              "hidden": ["Outside your dates"],
+              "shown": [],
+              "new": "show",
+              "earliest": "2028-02",
+              "latest": "2028-08"
+            },
+            "yours": {
+              "hidden": [
+                "Words that rule a posting out",
+                "Places you rule out",
+                "Companies you hide"
+              ],
+              "shown": [],
+              "new": "show",
+              "groups": [
+                {
+                  "name": "Words that rule a posting out",
+                  "field": "title",
+                  "words": ["sales"]
+                },
+                {
+                  "name": "Places you rule out",
+                  "field": "place",
+                  "words": ["berlin"]
+                },
+                {
+                  "name": "Companies you hide",
+                  "field": "company",
+                  "words": ["Example Staffing"]
+                },
+                {
+                  "name": "Borderline roles",
+                  "field": "title",
+                  "words": ["solutions engineer"]
+                }
+              ]
+            }
+          },
+          "followed_skip": ["age"]
+        }
+      },
+      "rules": {
+        "kind": {
+          "on": true,
+          "chosen": ["Internship", "Co-op"],
+          "words": []
+        },
+        "companies": {
+          "on": true,
+          "words": ["Example Staffing"]
+        },
+        "ruled_out": {
+          "on": true,
+          "chosen": ["Senior", "Staff"],
+          "words": ["sales"]
+        },
+        "roles": {
+          "on": true,
+          "chosen": ["Software", "Data"],
+          "words": []
+        },
+        "places": {
+          "on": true,
+          "chosen": ["United States", "Ireland"],
+          "remote": true
+        },
+        "terms": {
+          "on": true,
+          "chosen": ["Summer 2027", "Fall 2027"]
+        },
+        "sponsorship": {
+          "on": true,
+          "words": []
+        },
+        "age": {
+          "on": true,
+          "days": 7
+        },
+        "repeats": {
+          "on": true
+        }
+      }
+    },
+    {
+      "name": "filters: every rule off",
+      "from": {
+        "filters": {
+          "attributes": {
+            "job_type": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "field": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "level": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "company": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "source": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "location": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "term": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "age": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "sponsorship": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "requirements": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "graduation": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "yours": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            }
+          },
+          "followed_skip": ["age"]
+        }
+      },
+      "rules": {
+        "kind": {
+          "on": false,
+          "chosen": [],
+          "words": []
+        },
+        "companies": {
+          "on": false,
+          "words": []
+        },
+        "ruled_out": {
+          "on": false,
+          "chosen": [],
+          "words": []
+        },
+        "roles": {
+          "on": false,
+          "chosen": [],
+          "words": []
+        },
+        "places": {
+          "on": false,
+          "chosen": [],
+          "remote": true
+        },
+        "terms": {
+          "on": false,
+          "chosen": []
+        },
+        "sponsorship": {
+          "on": false,
+          "words": []
+        },
+        "age": {
+          "on": false,
+          "days": 7
+        },
+        "repeats": {
+          "on": true
+        }
+      }
+    },
+    {
+      "name": "filters: flags, years, a code after a comma and no term kept out",
+      "from": {
+        "filters": {
+          "attributes": {
+            "job_type": {
+              "hidden": [
+                "Co-op",
+                "Apprenticeship",
+                "Part-time",
+                "Contract",
+                "Other"
+              ],
+              "shown": ["Internship", "New grad"],
+              "new": "hide",
+              "words": {
+                "Internship": ["intern", "internship"],
+                "Co-op": ["co-op"],
+                "New grad": ["new grad"]
+              }
+            },
+            "field": {
+              "hidden": [
+                "Software",
+                "Data",
+                "Hardware",
+                "Product",
+                "Design",
+                "Finance",
+                "Marketing",
+                "Sales",
+                "Operations",
+                "People",
+                "Legal",
+                "Other"
+              ],
+              "shown": ["Machine learning", "Security"],
+              "new": "hide"
+            },
+            "level": {
+              "hidden": ["Senior", "Staff"],
+              "shown": [],
+              "new": "show"
+            },
+            "company": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "source": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "location": {
+              "hidden": [
+                "Ireland",
+                "United Kingdom",
+                "India",
+                "Germany",
+                "France",
+                "Netherlands",
+                "Spain",
+                "Poland",
+                "Switzerland",
+                "Israel",
+                "China",
+                "Japan",
+                "Singapore",
+                "Australia",
+                "Mexico",
+                "Brazil",
+                "Taiwan",
+                "South Korea",
+                "Sweden",
+                "Denmark",
+                "Italy",
+                "Portugal",
+                "Romania",
+                "Czechia",
+                "Hungary",
+                "Philippines",
+                "Vietnam",
+                "Costa Rica",
+                "Argentina",
+                "Colombia",
+                "UAE",
+                "Malaysia",
+                "Belgium",
+                "Austria",
+                "Finland",
+                "Norway",
+                "Greece",
+                "Turkey",
+                "Egypt",
+                "South Africa",
+                "Nigeria",
+                "Kenya",
+                "Thailand",
+                "Indonesia",
+                "New Zealand",
+                "Chile",
+                "Peru",
+                "Hong Kong",
+                "Saudi Arabia",
+                "Luxembourg",
+                "Estonia",
+                "Ukraine",
+                "Serbia",
+                "Qatar",
+                "Pakistan",
+                "Not recognised",
+                "Not given"
+              ],
+              "shown": ["United States", "Canada", "Remote"],
+              "new": "hide"
+            },
+            "term": {
+              "hidden": [
+                "Summer 2026",
+                "Winter 2025",
+                "Spring 2025",
+                "Summer 2025",
+                "Fall 2025",
+                "Not given"
+              ],
+              "shown": [
+                "Winter 2027",
+                "Spring 2027",
+                "Summer 2027",
+                "Fall 2027",
+                "Fall 2026"
+              ],
+              "new": "hide"
+            },
+            "age": {
+              "hidden": ["4–14 days", "Older"],
+              "shown": [],
+              "new": "show"
+            },
+            "sponsorship": {
+              "hidden": [],
+              "shown": [],
+              "new": "show",
+              "words": {
+                "Won't sponsor": ["no visa sponsorship"]
+              }
+            },
+            "requirements": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "graduation": {
+              "hidden": [],
+              "shown": [],
+              "new": "show",
+              "earliest": "2028-02",
+              "latest": "2028-08"
+            },
+            "yours": {
+              "hidden": ["Words that rule a posting out", "Not clinical"],
+              "shown": [],
+              "new": "show",
+              "groups": [
+                {
+                  "name": "Words that rule a posting out",
+                  "field": "title",
+                  "words": ["sales"]
+                },
+                {
+                  "name": "Borderline roles",
+                  "field": "title",
+                  "words": ["solutions engineer"]
+                },
+                {
+                  "name": "Not clinical",
+                  "field": "description",
+                  "words": ["clinical"]
+                }
+              ]
+            }
+          },
+          "followed_skip": []
+        }
+      },
+      "rules": {
+        "kind": {
+          "on": true,
+          "chosen": ["Internship", "New grad"],
+          "words": []
+        },
+        "companies": {
+          "on": false,
+          "words": []
+        },
+        "ruled_out": {
+          "on": true,
+          "chosen": ["Senior", "Staff"],
+          "words": ["sales"]
+        },
+        "roles": {
+          "on": true,
+          "chosen": ["Machine learning", "Security"],
+          "words": []
+        },
+        "places": {
+          "on": true,
+          "chosen": ["United States", "Canada"],
+          "remote": true
+        },
+        "terms": {
+          "on": true,
+          "chosen": [
+            "Winter 2027",
+            "Spring 2027",
+            "Summer 2027",
+            "Fall 2027",
+            "Fall 2026"
+          ]
+        },
+        "sponsorship": {
+          "on": false,
+          "words": []
+        },
+        "age": {
+          "on": true,
+          "days": 7
+        },
+        "repeats": {
+          "on": true
+        }
+      }
+    },
+    {
+      "name": "filters: a few terms hidden and new terms shown keeps every term",
+      "from": {
+        "filters": {
+          "attributes": {
+            "job_type": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "field": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "level": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "company": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "source": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "location": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "term": {
+              "hidden": ["Summer 2026"],
+              "shown": ["Summer 2027"],
+              "new": "show"
+            },
+            "age": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "sponsorship": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "requirements": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "graduation": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "yours": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            }
+          },
+          "followed_skip": ["age"]
+        }
+      },
+      "rules": {
+        "kind": {
+          "on": false,
+          "chosen": [],
+          "words": []
+        },
+        "companies": {
+          "on": false,
+          "words": []
+        },
+        "ruled_out": {
+          "on": false,
+          "chosen": [],
+          "words": []
+        },
+        "roles": {
+          "on": false,
+          "chosen": [],
+          "words": []
+        },
+        "places": {
+          "on": false,
+          "chosen": [],
+          "remote": true
+        },
+        "terms": {
+          "on": false,
+          "chosen": []
+        },
+        "sponsorship": {
+          "on": false,
+          "words": []
+        },
+        "age": {
+          "on": false,
+          "days": 7
+        },
+        "repeats": {
+          "on": true
+        }
+      }
+    },
+    {
+      "name": "filters: new terms hidden keeps only the terms shown",
+      "from": {
+        "filters": {
+          "attributes": {
+            "job_type": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "field": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "level": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "company": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "source": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "location": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "term": {
+              "hidden": [],
+              "shown": ["Summer 2027", "Not given"],
+              "new": "hide"
+            },
+            "age": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "sponsorship": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "requirements": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "graduation": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            },
+            "yours": {
+              "hidden": [],
+              "shown": [],
+              "new": "show"
+            }
+          },
+          "followed_skip": ["age"]
+        }
+      },
+      "rules": {
+        "kind": {
+          "on": false,
+          "chosen": [],
+          "words": []
+        },
+        "companies": {
+          "on": false,
+          "words": []
+        },
+        "ruled_out": {
+          "on": false,
+          "chosen": [],
+          "words": []
+        },
+        "roles": {
+          "on": false,
+          "chosen": [],
+          "words": []
+        },
+        "places": {
+          "on": false,
+          "chosen": [],
+          "remote": true
+        },
+        "terms": {
+          "on": true,
+          "chosen": ["Summer 2027"]
+        },
+        "sponsorship": {
+          "on": false,
+          "words": []
+        },
+        "age": {
+          "on": false,
+          "days": 7
+        },
+        "repeats": {
+          "on": true
+        }
+      }
+    }
+  ]
+}

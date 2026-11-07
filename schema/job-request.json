@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/job-request.json",
+  "title": "JobRequest",
+  "description": "What a person asks the engine to do while they wait; the app makes the job from it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "input"],
+  "properties": {
+    "kind": {
+      "$ref": "job.json#/properties/kind"
+    },
+    "input": {
+      "anyOf": [
+        {
+          "$ref": "job.json#/$defs/preview_input"
+        },
+        {
+          "$ref": "job.json#/$defs/check_source_input"
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "preview_rules"
+          }
+        },
+        "required": ["kind"]
+      },
+      "then": {
+        "properties": {
+          "input": {
+            "$ref": "job.json#/$defs/preview_input"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "check_source"
+          }
+        },
+        "required": ["kind"]
+      },
+      "then": {
+        "properties": {
+          "input": {
+            "$ref": "job.json#/$defs/check_source_input"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,254 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/profile.json",
+  "title": "Profile",
+  "description": "Everything a resume can say about one person, kept for their reference and for writing resumes. Apart from the settings: the engine's rules never read it, and a change to it never makes a new settings version. Versioned, so a stale screen can't overwrite a newer save.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "updated_at",
+    "about",
+    "education",
+    "experience",
+    "projects",
+    "skills",
+    "publications",
+    "awards",
+    "certifications",
+    "activities",
+    "languages",
+    "interests",
+    "more"
+  ],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "updated_at": { "$ref": "defs.json#/$defs/timestamp" },
+    "about": { "$ref": "#/$defs/about" },
+    "education": { "type": "array", "items": { "$ref": "#/$defs/education" }, "maxItems": 20 },
+    "experience": { "type": "array", "items": { "$ref": "#/$defs/experience" }, "maxItems": 50 },
+    "projects": { "type": "array", "items": { "$ref": "#/$defs/project" }, "maxItems": 50 },
+    "skills": { "type": "array", "items": { "$ref": "#/$defs/skill_group" }, "maxItems": 20 },
+    "publications": { "type": "array", "items": { "$ref": "#/$defs/publication" }, "maxItems": 50 },
+    "awards": { "type": "array", "items": { "$ref": "#/$defs/award" }, "maxItems": 50 },
+    "certifications": { "type": "array", "items": { "$ref": "#/$defs/certification" }, "maxItems": 50 },
+    "activities": { "type": "array", "items": { "$ref": "#/$defs/activity" }, "maxItems": 50 },
+    "languages": { "type": "array", "items": { "$ref": "#/$defs/language" }, "maxItems": 20 },
+    "interests": { "$ref": "#/$defs/short_list" },
+    "more": { "$ref": "#/$defs/long_text" }
+  },
+  "$defs": {
+    "entry_id": { "type": "string", "pattern": "^[a-z0-9_-]{1,40}$" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "text": { "type": "string", "maxLength": 200 },
+    "long_text": { "type": "string", "maxLength": 4000 },
+    "link": { "type": "string", "maxLength": 500 },
+    "month": {
+      "description": "A month, YYYY-MM, or empty when not given",
+      "type": "string",
+      "pattern": "^(\\d{4}-(0[1-9]|1[0-2]))?$"
+    },
+    "short_list": {
+      "description": "Short items such as skills, tools or courses, in the order given",
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 100 },
+      "maxItems": 100
+    },
+    "points": {
+      "description": "What was done and what came of it, one point each: raw material for a resume's bullets",
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 600 },
+      "maxItems": 30
+    },
+    "about": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "headline",
+        "email",
+        "phone",
+        "location",
+        "linkedin",
+        "github",
+        "website",
+        "other_links",
+        "availability",
+        "summary"
+      ],
+      "properties": {
+        "name": { "$ref": "#/$defs/text" },
+        "headline": { "$ref": "#/$defs/text" },
+        "email": { "$ref": "#/$defs/text" },
+        "phone": { "$ref": "#/$defs/text" },
+        "location": { "$ref": "#/$defs/text" },
+        "linkedin": { "$ref": "#/$defs/link" },
+        "github": { "$ref": "#/$defs/link" },
+        "website": { "$ref": "#/$defs/link" },
+        "other_links": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 500 },
+          "maxItems": 10
+        },
+        "availability": { "$ref": "#/$defs/text" },
+        "summary": { "$ref": "#/$defs/long_text" }
+      }
+    },
+    "education": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "school",
+        "degree",
+        "field",
+        "minor",
+        "location",
+        "start",
+        "end",
+        "gpa",
+        "honors",
+        "coursework",
+        "notes"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/entry_id" },
+        "school": { "$ref": "#/$defs/name" },
+        "degree": { "$ref": "#/$defs/text" },
+        "field": { "$ref": "#/$defs/text" },
+        "minor": { "$ref": "#/$defs/text" },
+        "location": { "$ref": "#/$defs/text" },
+        "start": { "$ref": "#/$defs/month" },
+        "end": { "$ref": "#/$defs/month" },
+        "gpa": { "$ref": "#/$defs/text" },
+        "honors": { "$ref": "#/$defs/text" },
+        "coursework": { "$ref": "#/$defs/short_list" },
+        "notes": { "$ref": "#/$defs/long_text" }
+      }
+    },
+    "experience": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "organization",
+        "kind",
+        "location",
+        "start",
+        "end",
+        "current",
+        "points",
+        "tools",
+        "notes"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/entry_id" },
+        "title": { "$ref": "#/$defs/name" },
+        "organization": { "$ref": "#/$defs/text" },
+        "kind": { "enum": ["internship", "co_op", "full_time", "part_time", "research", "contract"] },
+        "location": { "$ref": "#/$defs/text" },
+        "start": { "$ref": "#/$defs/month" },
+        "end": { "$ref": "#/$defs/month" },
+        "current": { "type": "boolean" },
+        "points": { "$ref": "#/$defs/points" },
+        "tools": { "$ref": "#/$defs/short_list" },
+        "notes": { "$ref": "#/$defs/long_text" }
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "summary", "link", "start", "end", "current", "points", "tools", "notes"],
+      "properties": {
+        "id": { "$ref": "#/$defs/entry_id" },
+        "name": { "$ref": "#/$defs/name" },
+        "summary": { "$ref": "#/$defs/text" },
+        "link": { "$ref": "#/$defs/link" },
+        "start": { "$ref": "#/$defs/month" },
+        "end": { "$ref": "#/$defs/month" },
+        "current": { "type": "boolean" },
+        "points": { "$ref": "#/$defs/points" },
+        "tools": { "$ref": "#/$defs/short_list" },
+        "notes": { "$ref": "#/$defs/long_text" }
+      }
+    },
+    "skill_group": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "skills"],
+      "properties": {
+        "id": { "$ref": "#/$defs/entry_id" },
+        "name": { "$ref": "#/$defs/name" },
+        "skills": { "$ref": "#/$defs/short_list" }
+      }
+    },
+    "publication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "kind", "authors", "venue", "date", "link", "notes"],
+      "properties": {
+        "id": { "$ref": "#/$defs/entry_id" },
+        "title": { "$ref": "#/$defs/name" },
+        "kind": { "enum": ["paper", "presentation", "poster", "article", "thesis", "patent"] },
+        "authors": { "$ref": "#/$defs/long_text" },
+        "venue": { "$ref": "#/$defs/text" },
+        "date": { "$ref": "#/$defs/month" },
+        "link": { "$ref": "#/$defs/link" },
+        "notes": { "$ref": "#/$defs/long_text" }
+      }
+    },
+    "award": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "issuer", "date", "notes"],
+      "properties": {
+        "id": { "$ref": "#/$defs/entry_id" },
+        "name": { "$ref": "#/$defs/name" },
+        "issuer": { "$ref": "#/$defs/text" },
+        "date": { "$ref": "#/$defs/month" },
+        "notes": { "$ref": "#/$defs/long_text" }
+      }
+    },
+    "certification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "issuer", "date", "expires", "link", "notes"],
+      "properties": {
+        "id": { "$ref": "#/$defs/entry_id" },
+        "name": { "$ref": "#/$defs/name" },
+        "issuer": { "$ref": "#/$defs/text" },
+        "date": { "$ref": "#/$defs/month" },
+        "expires": { "$ref": "#/$defs/month" },
+        "link": { "$ref": "#/$defs/link" },
+        "notes": { "$ref": "#/$defs/long_text" }
+      }
+    },
+    "activity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "role", "organization", "location", "start", "end", "current", "points", "notes"],
+      "properties": {
+        "id": { "$ref": "#/$defs/entry_id" },
+        "role": { "$ref": "#/$defs/text" },
+        "organization": { "$ref": "#/$defs/name" },
+        "location": { "$ref": "#/$defs/text" },
+        "start": { "$ref": "#/$defs/month" },
+        "end": { "$ref": "#/$defs/month" },
+        "current": { "type": "boolean" },
+        "points": { "$ref": "#/$defs/points" },
+        "notes": { "$ref": "#/$defs/long_text" }
+      }
+    },
+    "language": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "language", "level"],
+      "properties": {
+        "id": { "$ref": "#/$defs/entry_id" },
+        "language": { "$ref": "#/$defs/name" },
+        "level": { "enum": ["native", "fluent", "professional", "conversational", "basic"] }
+      }
+    }
+  }
+}

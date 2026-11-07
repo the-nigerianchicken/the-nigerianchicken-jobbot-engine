@@ -1,0 +1,395 @@
+{
+  "$id": "https://jobbot.invalid/schema/data/rules.json",
+  "title": "Rules",
+  "description": "The rules that decide which jobs are shown, in the order they're applied: the first that hides a job names it. Each rule's choices bring their own words; a person adds their own words beside them. Read by the engine (jobbot_engine/rules/judge.py) and the app (src/shared/rules.ts).",
+  "rules": [
+    {
+      "id": "kind",
+      "name": "Kind of job",
+      "about": "Only jobs whose title says they're one of these are collected."
+    },
+    {
+      "id": "companies",
+      "name": "Companies you hide",
+      "about": "Jobs at these companies are hidden."
+    },
+    {
+      "id": "ruled_out",
+      "name": "Words you rule out",
+      "about": "Jobs with these words in the title are hidden."
+    },
+    {
+      "id": "roles",
+      "name": "Roles",
+      "about": "Only jobs whose title names one of these roles are shown."
+    },
+    {
+      "id": "places",
+      "name": "Places",
+      "about": "Jobs only in other countries are hidden. A place jobbot doesn't recognise is shown."
+    },
+    {
+      "id": "terms",
+      "name": "Terms",
+      "about": "Jobs only for other terms are hidden. A job that names no term is shown."
+    },
+    {
+      "id": "sponsorship",
+      "name": "Won't sponsor",
+      "about": "Jobs outside your home country that say they won't sponsor a visa are hidden, when your profile says you need one."
+    },
+    {
+      "id": "age",
+      "name": "Found late",
+      "about": "Jobs that were already this old when jobbot found them are hidden, except at companies you follow."
+    },
+    {
+      "id": "repeats",
+      "name": "Repeats",
+      "about": "A job that's already shown is shown once. Another copy, from the same board or from a GitHub list, is hidden."
+    }
+  ],
+  "kinds": {
+    "Internship": [
+      "intern",
+      "interns",
+      "internship",
+      "internships",
+      "summer student",
+      "werkstudent"
+    ],
+    "Co-op": ["co-op", "coop", "co op"],
+    "New grad": [
+      "new grad",
+      "new graduate",
+      "graduate",
+      "early career",
+      "university grad",
+      "entry level",
+      "early in career",
+      "campus hire"
+    ],
+    "Entry level": {
+      "about": "A title of your Roles with no word of a more senior job: senior, lead, principal, director, III and the like.",
+      "words": [],
+      "above": [
+        "senior",
+        "sr",
+        "snr",
+        "staff",
+        "principal",
+        "lead",
+        "director",
+        "head of",
+        "vp",
+        "vice president",
+        "avp",
+        "svp",
+        "evp",
+        "chief",
+        "ii",
+        "iii",
+        "iv"
+      ]
+    },
+    "Apprenticeship": ["apprentice", "apprenticeship"],
+    "Part-time": ["part-time", "part time"],
+    "Contract": [
+      "contract",
+      "contractor",
+      "temporary",
+      "temp",
+      "fixed term",
+      "fixed-term"
+    ]
+  },
+  "roles": {
+    "Software": [
+      "software",
+      "developer",
+      "sde",
+      "swe",
+      "programmer",
+      "backend",
+      "back end",
+      "back-end",
+      "frontend",
+      "front end",
+      "front-end",
+      "full stack",
+      "full-stack",
+      "fullstack",
+      "web",
+      "mobile",
+      "ios",
+      "android",
+      "devops",
+      "sre",
+      "site reliability",
+      "platform engineer",
+      "platform engineering",
+      "platform development",
+      "infrastructure",
+      "systems engineer",
+      "sdet",
+      "application engineer",
+      "applications engineer",
+      "qa",
+      "test engineer",
+      "test automation",
+      "automation testing",
+      "cloud engineer",
+      "member of technical staff",
+      "forward deployed",
+      "programming",
+      "compiler",
+      "systems development",
+      "cloud",
+      "technology",
+      "technologist",
+      "computer science",
+      "comp sci",
+      "computer engineering",
+      "algorithm",
+      "algorithms",
+      "devsecops",
+      "firmware",
+      "embedded",
+      "react",
+      "simulation engineer",
+      "simulation engineering"
+    ],
+    "Data": [
+      "data",
+      "analytics",
+      "analyst",
+      "business intelligence",
+      "bi",
+      "database"
+    ],
+    "Machine learning": [
+      "machine learning",
+      "ml",
+      "ai",
+      "artificial intelligence",
+      "deep learning",
+      "computer vision",
+      "nlp",
+      "llm",
+      "generative ai",
+      "genai",
+      "applied scientist",
+      "research scientist",
+      "research engineer",
+      "applied science",
+      "natural language processing",
+      "reinforcement learning",
+      "robot learning",
+      "perception",
+      "image processing"
+    ],
+    "Security": [
+      "security",
+      "cybersecurity",
+      "cyber",
+      "information security",
+      "infosec"
+    ],
+    "Hardware": [
+      "hardware",
+      "electrical",
+      "firmware",
+      "embedded",
+      "asic",
+      "fpga",
+      "silicon",
+      "circuit",
+      "rf",
+      "mechanical",
+      "manufacturing",
+      "robotics",
+      "chip",
+      "semiconductor",
+      "physical design",
+      "verification engineer",
+      "process engineer"
+    ],
+    "Product": [
+      "product manager",
+      "product management",
+      "product owner",
+      "program manager",
+      "technical program",
+      "tpm",
+      "apm",
+      "product coordinator",
+      "product analyst",
+      "product associate",
+      "product operations"
+    ],
+    "Project and program": [
+      "project coordinator",
+      "project analyst",
+      "project associate",
+      "project administrator",
+      "project specialist",
+      "project manager",
+      "project management",
+      "project controls",
+      "project officer",
+      "program coordinator",
+      "program analyst",
+      "program associate",
+      "program administrator",
+      "program specialist",
+      "program manager",
+      "program management",
+      "program officer",
+      "programme coordinator",
+      "programme manager",
+      "programme officer",
+      "pmo"
+    ],
+    "Design": [
+      "designer",
+      "design",
+      "ux",
+      "ui",
+      "user experience",
+      "user research",
+      "researcher"
+    ],
+    "Finance": [
+      "finance",
+      "financial",
+      "accounting",
+      "accountant",
+      "investment",
+      "investment banking",
+      "trader",
+      "trading",
+      "quant",
+      "quantitative",
+      "audit",
+      "tax",
+      "actuarial",
+      "treasury",
+      "risk"
+    ],
+    "Marketing": [
+      "marketing",
+      "brand",
+      "growth",
+      "communications",
+      "content",
+      "social media",
+      "pr",
+      "public relations",
+      "seo"
+    ],
+    "Sales": [
+      "sales",
+      "account executive",
+      "business development",
+      "account manager",
+      "customer success",
+      "solutions engineer",
+      "sales engineer",
+      "partnerships"
+    ],
+    "Operations": [
+      "operations",
+      "supply chain",
+      "logistics",
+      "procurement",
+      "business operations",
+      "strategy",
+      "consulting",
+      "consultant"
+    ],
+    "People": [
+      "hr",
+      "human resources",
+      "recruiting",
+      "recruiter",
+      "talent",
+      "people"
+    ],
+    "Legal": ["legal", "law", "paralegal", "compliance", "policy"]
+  },
+  "searches": {
+    "Software": ["software", "developer"],
+    "Data": ["data", "analyst"],
+    "Machine learning": ["machine learning"],
+    "Security": ["security"],
+    "Hardware": ["hardware"],
+    "Product": ["product"],
+    "Project and program": ["project", "program"],
+    "Design": ["designer"],
+    "Finance": ["finance", "accountant"],
+    "Marketing": ["marketing"],
+    "Sales": ["sales"],
+    "Operations": ["operations"],
+    "People": ["recruiter", "human resources"],
+    "Legal": ["legal"]
+  },
+  "ruled_out": {
+    "Senior": {
+      "words": ["senior", "sr", "snr"]
+    },
+    "Staff": {
+      "words": ["staff", "principal"]
+    },
+    "Lead": {
+      "words": ["lead", "architect"]
+    },
+    "Manager": {
+      "words": ["manager", "director", "head of", "vp", "vice president"]
+    },
+    "Level II and up": {
+      "words": ["ii", "iii", "iv"]
+    },
+    "Graduate degree": {
+      "words": [
+        "phd",
+        "ph.d",
+        "ph.d.",
+        "doctoral",
+        "doctorate",
+        "masters",
+        "master's",
+        "master’s",
+        "msc",
+        "ms/phd"
+      ],
+      "unless": ["bachelor*", "undergrad*", "bs", "ba", "bsc", "b.s.", "b.sc"]
+    }
+  },
+  "ignore": [
+    "member of technical staff",
+    "staff accountant",
+    "program manager",
+    "product manager",
+    "account manager",
+    "project manager",
+    "technical program manager"
+  ],
+  "sponsorship": [
+    "unable to sponsor",
+    "not able to sponsor",
+    "will not sponsor",
+    "won't sponsor",
+    "cannot sponsor",
+    "can't sponsor",
+    "do not sponsor",
+    "does not sponsor",
+    "not sponsor",
+    "no sponsorship",
+    "without sponsorship",
+    "sponsorship is not available",
+    "sponsorship not available",
+    "no visa sponsorship",
+    "not provide sponsorship",
+    "not offer sponsorship"
+  ]
+}
