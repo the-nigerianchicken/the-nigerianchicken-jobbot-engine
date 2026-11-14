@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/resume-answer.json",
+  "title": "ResumeAnswer",
+  "description": "The engine's answer to a resume (POST /engine/resumes/{id}): the one-page PDF (base64) and its notes, or why it failed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "file_name",
+    "pdf",
+    "notes",
+    "error"
+  ],
+  "properties": {
+    "status": {
+      "enum": [
+        "done",
+        "failed"
+      ]
+    },
+    "file_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[A-Za-z0-9_.-]{1,100}$"
+    },
+    "pdf": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 1500000,
+      "pattern": "^[A-Za-z0-9+/=]*$"
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 20000
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 500
+    }
+  }
+}

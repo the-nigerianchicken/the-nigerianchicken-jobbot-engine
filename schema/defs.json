@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/defs.json",
+  "title": "Shared definitions",
+  "description": "Pieces the record schemas share. Not a record itself.",
+  "$defs": {
+    "source_kind": {
+      "enum": [
+        "workday",
+        "greenhouse",
+        "ashby",
+        "lever",
+        "amazon",
+        "apple",
+        "google",
+        "microsoft",
+        "shopify",
+        "uber",
+        "netflix",
+        "github_list",
+        "jobbank",
+        "linkedin"
+      ]
+    },
+    "source_id": {
+      "description": "kind:org, the same key the old engine used for a board",
+      "type": "string",
+      "pattern": "^(workday|greenhouse|ashby|lever|amazon|apple|google|microsoft|shopify|uber|netflix|github_list|jobbank|linkedin):\\S{1,200}$"
+    },
+    "posting_id": {
+      "description": "The old engine's uid: the first 16 hex characters of sha1 over source:org:raw_id-or-url",
+      "type": "string",
+      "pattern": "^[0-9a-f]{16}$"
+    },
+    "user_id": { "type": "string", "pattern": "^u_[a-z0-9]{1,32}$" },
+    "rule_id": { "type": "string", "pattern": "^r_[a-z0-9_]{1,40}$" },
+    "uuid": { "type": "string", "format": "uuid" },
+    "timestamp": {
+      "description": "RFC 3339 in UTC, with a Z suffix",
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "nullable_timestamp": { "anyOf": [{ "$ref": "#/$defs/timestamp" }, { "type": "null" }] },
+    "month": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])$" },
+    "company": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "count": { "type": "integer", "minimum": 0 },
+    "words": {
+      "description": "At least one word or phrase, matched as whole words",
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 100 },
+      "minItems": 1,
+      "maxItems": 500
+    },
+    "word_list": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 100 },
+      "maxItems": 500
+    },
+    "rule_field": { "enum": ["title", "description", "company", "place"] },
+    "posting_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["posting_id", "company", "title"],
+      "properties": {
+        "posting_id": { "$ref": "#/$defs/posting_id" },
+        "company": { "$ref": "#/$defs/company" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 300 }
+      }
+    },
+    "posting_ref_with_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["posting_id", "company", "title", "rule_name"],
+      "properties": {
+        "posting_id": { "$ref": "#/$defs/posting_id" },
+        "company": { "$ref": "#/$defs/company" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "rule_name": { "type": "string", "minLength": 1, "maxLength": 80 }
+      }
+    }
+  }
+}

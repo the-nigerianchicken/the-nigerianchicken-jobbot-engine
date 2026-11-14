@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "updated_at": "2026-10-16T12:00:00Z",
+  "about": {
+    "name": "Sam Example",
+    "headline": "Computer engineering student",
+    "email": "sam@example.com",
+    "phone": "555-0100",
+    "location": "Fredonia City",
+    "linkedin": "linkedin.com/in/sam-example",
+    "github": "github.com/sam-example",
+    "website": "",
+    "other_links": [],
+    "availability": "May to August 2027",
+    "summary": ""
+  },
+  "education": [
+    {
+      "id": "e_school",
+      "school": "",
+      "degree": "Bachelor of Applied Science",
+      "field": "Computer Engineering",
+      "minor": "",
+      "location": "Fredonia City",
+      "start": "2023-09",
+      "end": "2027-12",
+      "gpa": "3.8",
+      "honors": "Dean's list",
+      "coursework": [
+        "Operating Systems",
+        "Databases"
+      ],
+      "notes": ""
+    }
+  ],
+  "experience": [
+    {
+      "id": "x_lab",
+      "title": "Software Developer Intern",
+      "organization": "Example Lab",
+      "kind": "internship",
+      "location": "Remote",
+      "start": "2025-05",
+      "end": "",
+      "current": true,
+      "points": [
+        "Built a search tool the lab's 40 researchers use daily"
+      ],
+      "tools": [
+        "Python",
+        "PostgreSQL"
+      ],
+      "notes": "The 40 is the lab's size, not a result."
+    }
+  ],
+  "projects": [
+    {
+      "id": "p_bot",
+      "name": "Job finder",
+      "summary": "Finds internship postings",
+      "link": "",
+      "start": "2026-01",
+      "end": "",
+      "current": true,
+      "points": [],
+      "tools": [
+        "TypeScript"
+      ],
+      "notes": ""
+    }
+  ],
+  "skills": [
+    {
+      "id": "s_lang",
+      "name": "Languages",
+      "skills": [
+        "Python",
+        "TypeScript",
+        "C"
+      ]
+    }
+  ],
+  "publications": [
+    {
+      "id": "u_talk",
+      "title": "A made-up talk",
+      "kind": "presentation",
+      "authors": "A. Person, S. Example",
+      "venue": "Example Conference 2026",
+      "date": "2026-06",
+      "link": "",
+      "notes": ""
+    }
+  ],
+  "awards": [
+    {
+      "id": "a_prize",
+      "name": "Example Prize",
+      "issuer": "Example University",
+      "date": "2025-04",
+      "notes": ""
+    }
+  ],
+  "certifications": [],
+  "activities": [
+    {
+      "id": "c_club",
+      "role": "Lead",
+      "organization": "Robotics Club",
+      "location": "",
+      "start": "2024-09",
+      "end": "",
+      "current": true,
+      "points": [],
+      "notes": ""
+    }
+  ],
+  "languages": [
+    {
+      "id": "l_en",
+      "language": "English",
+      "level": "native"
+    }
+  ],
+  "interests": [
+    "Climbing"
+  ],
+  "more": ""
+}

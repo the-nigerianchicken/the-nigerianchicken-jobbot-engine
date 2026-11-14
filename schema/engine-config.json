@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/engine-config.json",
+  "title": "EngineConfig",
+  "description": "What the engine reads at the start of a run (GET /engine/config): everyone's settings, sources and follows, and the shared sources.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["users", "sources"],
+  "properties": {
+    "users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["user_id", "settings", "sources", "follows"],
+        "properties": {
+          "user_id": { "$ref": "defs.json#/$defs/user_id" },
+          "settings": { "$ref": "settings.json" },
+          "sources": { "type": "array", "items": { "$ref": "user-source.json" } },
+          "follows": { "type": "array", "items": { "$ref": "follow.json" } }
+        }
+      }
+    },
+    "sources": { "type": "array", "items": { "$ref": "source.json" } }
+  }
+}

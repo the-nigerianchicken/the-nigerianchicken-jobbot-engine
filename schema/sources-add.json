@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/sources-add.json",
+  "title": "SourcesAdd",
+  "description": "Sources the engine adds (POST /engine/sources), such as a board found for a missed posting, and who uses them.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["sources", "user_sources"],
+  "properties": {
+    "sources": { "type": "array", "items": { "$ref": "source.json" }, "maxItems": 50 },
+    "user_sources": { "type": "array", "items": { "$ref": "user-source.json" }, "maxItems": 50 }
+  }
+}

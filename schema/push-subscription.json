@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/push-subscription.json",
+  "title": "PushSubscription",
+  "description": "A phone's Web Push subscription, as the browser gives it: where to send, and the keys to encrypt with.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["endpoint", "keys"],
+  "properties": {
+    "endpoint": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://",
+      "maxLength": 1000
+    },
+    "keys": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["p256dh", "auth"],
+      "properties": {
+        "p256dh": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "minLength": 80,
+          "maxLength": 100
+        },
+        "auth": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "minLength": 16,
+          "maxLength": 32
+        }
+      }
+    }
+  }
+}

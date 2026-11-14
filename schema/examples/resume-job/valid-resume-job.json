@@ -1,0 +1,20 @@
+{
+  "resume": {
+    "id": "1c2d3e4f-5a6b-4c7d-8e9f-0a1b2c3d4e5f",
+    "note": null,
+    "posting": {
+      "company": "Acme",
+      "title": "Software Intern",
+      "location": "Toronto, ON, Canada",
+      "url": "https://boards.greenhouse.io/acme/jobs/1",
+      "description": "Build things in Python."
+    },
+    "kit": {
+      "profile.yaml": "experiences: []\n",
+      "PIPELINE.md": "# Rules\n",
+      "resume.cls": "% class\n",
+      "verify_resume.py": "print('RESULT: PASS')\n",
+      "fit.yaml": "file_name: Resume_{company}\n"
+    }
+  }
+}
