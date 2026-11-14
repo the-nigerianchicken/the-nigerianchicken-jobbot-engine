@@ -1,0 +1,43 @@
+name: resume
+
+# Makes the tailored resumes the app has queued. The app starts it when someone asks for one, on the branch
+# of the instance it serves (staging or production). The person's kit and the posting come from the app,
+# and the PDF goes back to it: this page is public, so it shows only how it went (resume.sh).
+# Published from the private repo's infra/actions/resume.yml by tools/publish_engine.py.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One at a time per instance; it makes every queued resume, so one more waiting is enough.
+concurrency:
+  group: resume-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  make:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: engine/uv.lock
+      - name: Install the engine
+        run: uv sync --project engine --frozen --no-dev --extra resume --quiet
+      - name: Install tectonic and Claude Code
+        run: |
+          cd "$RUNNER_TEMP" && curl --proto '=https' --tlsv1.2 -fsSL https://drop-sh.fullyjustified.net | sh >/dev/null
+          sudo mv "$RUNNER_TEMP/tectonic" /usr/local/bin/tectonic
+          npm install --global --silent @anthropic-ai/claude-code
+      - name: Make
+        env:
+          # Each branch's own secret, or nothing: never the other instance's (resume.sh then doesn't run).
+          JOBBOT_API_URL: ${{ github.ref_name == 'staging' && secrets.STAGING_API_URL || github.ref_name == 'production' && secrets.PRODUCTION_API_URL || '' }}
+          JOBBOT_ENGINE_TOKEN: ${{ github.ref_name == 'staging' && secrets.STAGING_ENGINE_TOKEN || github.ref_name == 'production' && secrets.PRODUCTION_ENGINE_TOKEN || '' }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: bash resume.sh

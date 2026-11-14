@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/job.json",
+  "title": "Job",
+  "description": "Work the app asks the engine to do while someone waits: preview a rule change, or check a source link.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "user_id", "kind", "status", "created_at", "started_at", "finished_at", "input", "result", "error"],
+  "properties": {
+    "id": { "$ref": "defs.json#/$defs/uuid" },
+    "user_id": { "$ref": "defs.json#/$defs/user_id" },
+    "kind": { "enum": ["preview_rules", "check_source"] },
+    "status": { "enum": ["queued", "running", "done", "failed"] },
+    "created_at": { "$ref": "defs.json#/$defs/timestamp" },
+    "started_at": { "$ref": "defs.json#/$defs/nullable_timestamp" },
+    "finished_at": { "$ref": "defs.json#/$defs/nullable_timestamp" },
+    "input": { "anyOf": [{ "$ref": "#/$defs/preview_input" }, { "$ref": "#/$defs/check_source_input" }] },
+    "result": {
+      "anyOf": [{ "$ref": "#/$defs/preview_result" }, { "$ref": "#/$defs/check_source_result" }, { "type": "null" }]
+    },
+    "error": { "type": ["string", "null"], "maxLength": 500 }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "kind": { "const": "preview_rules" } }, "required": ["kind"] },
+      "then": {
+        "properties": {
+          "input": { "$ref": "#/$defs/preview_input" },
+          "result": { "anyOf": [{ "$ref": "#/$defs/preview_result" }, { "type": "null" }] }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "kind": { "const": "check_source" } }, "required": ["kind"] },
+      "then": {
+        "properties": {
+          "input": { "$ref": "#/$defs/check_source_input" },
+          "result": { "anyOf": [{ "$ref": "#/$defs/check_source_result" }, { "type": "null" }] }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "preview_input": {
+      "title": "PreviewInput",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["settings"],
+      "properties": { "settings": { "$ref": "settings.json" } }
+    },
+    "check_source_input": {
+      "title": "CheckSourceInput",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url"],
+      "properties": { "url": { "type": "string", "format": "uri" } }
+    },
+    "preview_result": {
+      "title": "PreviewResult",
+      "description": "What the edited rules would do to the last 30 days of postings",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["window_days", "leaving_new", "newly_flagged", "returning", "collected_more"],
+      "properties": {
+        "window_days": { "const": 30 },
+        "leaving_new": {
+          "type": "array",
+          "items": { "$ref": "defs.json#/$defs/posting_ref_with_rule" },
+          "maxItems": 1000
+        },
+        "newly_flagged": {
+          "type": "array",
+          "items": { "$ref": "defs.json#/$defs/posting_ref_with_rule" },
+          "maxItems": 1000
+        },
+        "returning": { "type": "array", "items": { "$ref": "defs.json#/$defs/posting_ref" }, "maxItems": 1000 },
+        "collected_more": { "$ref": "defs.json#/$defs/count" }
+      }
+    },
+    "check_source_result": {
+      "title": "CheckSourceResult",
+      "description": "What a pasted link turned out to be, before it's added",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recognized", "source", "openings", "matching", "sample", "message"],
+      "properties": {
+        "recognized": { "type": "boolean" },
+        "source": { "anyOf": [{ "$ref": "source.json" }, { "type": "null" }] },
+        "openings": { "$ref": "defs.json#/$defs/count" },
+        "matching": { "$ref": "defs.json#/$defs/count" },
+        "sample": {
+          "type": "array",
+          "maxItems": 5,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["title", "location", "url"],
+            "properties": {
+              "title": { "type": "string", "minLength": 1, "maxLength": 300 },
+              "location": { "type": "string", "maxLength": 300 },
+              "url": { "type": "string", "format": "uri" }
+            }
+          }
+        },
+        "message": { "type": "string", "minLength": 1, "maxLength": 500 }
+      }
+    }
+  }
+}

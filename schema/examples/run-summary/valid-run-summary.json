@@ -1,0 +1,40 @@
+{
+  "run_id": "6f1d2c3b-4a5e-4f60-8a7b-9c0d1e2f3a4b",
+  "engine_version": "0.1.0",
+  "started_at": "2026-10-01T15:30:00Z",
+  "finished_at": "2026-10-01T15:31:12Z",
+  "sources_due": 190,
+  "sources_ok": 189,
+  "failures": [
+    {
+      "source_id": "workday:example-robotics",
+      "error": "The board took longer than 20 seconds to answer",
+      "consecutive": 2
+    }
+  ],
+  "checked": {
+    "greenhouse:example-robotics": "2026-10-01T15:30:41Z"
+  },
+  "postings_new": 3,
+  "postings_changed": 1,
+  "postings_closed": 0,
+  "skipped_other_kinds": 412,
+  "skipped_by_person": {
+    "u_owner": {
+      "by_source": { "greenhouse:example-robotics": 2 },
+      "examples": [
+        {
+          "company": "Example Robotics",
+          "title": "Senior Account Executive",
+          "why": "no Internship word in the title"
+        },
+        {
+          "company": "Example Robotics",
+          "title": "Staff Engineer",
+          "why": "no Internship word in the title"
+        }
+      ]
+    }
+  },
+  "problems": []
+}

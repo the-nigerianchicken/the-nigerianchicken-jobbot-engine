@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/resume-job.json",
+  "title": "ResumeJob",
+  "description": "The answer to the engine asking for a resume to make (GET /engine/resumes/next): the oldest queued one, or none. The kit is the person's own files (their facts, rules, LaTeX class, checker and page limits), kept only in the app.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "resume"
+  ],
+  "properties": {
+    "resume": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/resume"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "resume": {
+      "title": "ResumeWork",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "note",
+        "posting",
+        "kit"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "defs.json#/$defs/uuid"
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 1000
+        },
+        "posting": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "company",
+            "title",
+            "location",
+            "url",
+            "description"
+          ],
+          "properties": {
+            "company": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          }
+        },
+        "kit": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

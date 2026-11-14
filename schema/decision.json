@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/decision.json",
+  "title": "Decision",
+  "description": "The engine's judgement of one posting for one person. The engine never writes the states a person sets (applying, applied, not interested, shown anyway), and every removal names the rule that kept the posting out (rule_id r_<rule>, rule_name its name, matched: what it matched). alert_reason says why it alerts; the app alerts only the first time a posting enters New for that person.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "user_id",
+    "posting_id",
+    "state",
+    "rule_id",
+    "rule_name",
+    "matched",
+    "settings_version",
+    "evaluated_at",
+    "alert_reason",
+    "notes"
+  ],
+  "properties": {
+    "user_id": {
+      "$ref": "defs.json#/$defs/user_id"
+    },
+    "posting_id": {
+      "$ref": "defs.json#/$defs/posting_id"
+    },
+    "state": {
+      "enum": ["new", "flagged", "filtered"]
+    },
+    "rule_id": {
+      "anyOf": [
+        {
+          "$ref": "defs.json#/$defs/rule_id"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "rule_name": {
+      "type": ["string", "null"],
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "matched": {
+      "description": "The words or values that made the rule fire",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 200
+      },
+      "maxItems": 20
+    },
+    "settings_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "evaluated_at": {
+      "$ref": "defs.json#/$defs/timestamp"
+    },
+    "alert_reason": {
+      "description": "Why this posting alerts, in plain words (\"You follow Acme\", \"Alert rule: Machine learning\"), or null",
+      "type": ["string", "null"],
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "notes": {
+      "description": "Anything else the rules noticed: further flags, a preferred place, a rule that couldn't be checked",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "maxItems": 10
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "new"
+          }
+        },
+        "required": ["state"]
+      },
+      "then": {
+        "properties": {
+          "rule_id": {
+            "type": "null"
+          },
+          "rule_name": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "enum": ["flagged", "filtered"]
+          }
+        },
+        "required": ["state"]
+      },
+      "then": {
+        "properties": {
+          "rule_id": {
+            "$ref": "defs.json#/$defs/rule_id"
+          },
+          "rule_name": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ]
+}

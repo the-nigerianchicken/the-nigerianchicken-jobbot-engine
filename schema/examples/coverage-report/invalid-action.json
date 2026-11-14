@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-10-02T06:00:00Z",
+  "window_days": 7,
+  "lists": [
+    {
+      "source_id": "github_list:simplify",
+      "read_at": "2026-10-02T05:45:00Z",
+      "error": null
+    }
+  ],
+  "list_postings": 41,
+  "found": 40,
+  "found_first": 37,
+  "missed": [
+    {
+      "company": "Example Robotics",
+      "title": "Firmware Intern",
+      "url": "https://jobs.example-robotics.test/firmware-intern",
+      "list_source_id": "github_list:simplify",
+      "action": "deleted",
+      "source_id": "greenhouse:example-robotics"
+    }
+  ]
+}

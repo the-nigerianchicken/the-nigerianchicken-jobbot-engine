@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/job-answer.json",
+  "title": "JobAnswer",
+  "description": "The engine's answer to a job (POST /engine/jobs/{id}). The API checks the result against the job's kind.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "result", "error"],
+  "properties": {
+    "status": { "enum": ["done", "failed"] },
+    "result": { "type": ["object", "null"] },
+    "error": { "type": ["string", "null"], "maxLength": 500 }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/follow.json",
+  "title": "Follow",
+  "description": "A company someone follows: its sources are checked every 5 minutes, and its postings alert.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["user_id", "company"],
+  "properties": {
+    "user_id": { "$ref": "defs.json#/$defs/user_id" },
+    "company": { "$ref": "defs.json#/$defs/company" }
+  }
+}
