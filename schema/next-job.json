@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/next-job.json",
+  "title": "NextJob",
+  "description": "The answer to the engine asking for queued work (GET /engine/jobs/next): one job, or none.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["job"],
+  "properties": {
+    "job": { "anyOf": [{ "$ref": "job.json" }, { "type": "null" }] }
+  }
+}

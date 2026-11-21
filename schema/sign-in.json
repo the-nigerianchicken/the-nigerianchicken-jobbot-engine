@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/sign-in.json",
+  "title": "SignIn",
+  "description": "The passcode the app is signed in with.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["passcode"],
+  "properties": {
+    "passcode": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    }
+  }
+}

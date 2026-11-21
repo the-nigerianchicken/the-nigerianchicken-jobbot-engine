@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/person-limits.json",
+  "title": "PersonLimits",
+  "description": "What the owner allows a person: the fastest any of their boards is checked, whether their screens refresh by themselves, and which features they have. What the person chose is kept under these.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["fastest_check_minutes", "live_refresh", "alerts", "follow_alerts", "github_lists"],
+  "properties": {
+    "fastest_check_minutes": { "enum": [5, 15, 60, 1440] },
+    "live_refresh": { "type": "boolean" },
+    "alerts": { "type": "boolean" },
+    "follow_alerts": { "type": "boolean" },
+    "github_lists": { "type": "boolean" }
+  }
+}

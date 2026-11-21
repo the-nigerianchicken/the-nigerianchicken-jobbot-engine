@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/application-edit.json",
+  "title": "ApplicationEdit",
+  "description": "A change to one of his applications (PUT /api/applications/{id}): its status, his notes on it, or both.",
+  "type": "object",
+  "additionalProperties": false,
+  "minProperties": 1,
+  "properties": {
+    "status": {
+      "enum": ["applied", "oa", "interview", "offer", "accepted", "rejected", "no_response"]
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 20000
+    }
+  }
+}

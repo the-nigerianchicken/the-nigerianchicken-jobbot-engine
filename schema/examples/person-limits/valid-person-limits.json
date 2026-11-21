@@ -1,0 +1,7 @@
+{
+  "fastest_check_minutes": 60,
+  "live_refresh": false,
+  "alerts": true,
+  "follow_alerts": false,
+  "github_lists": true
+}

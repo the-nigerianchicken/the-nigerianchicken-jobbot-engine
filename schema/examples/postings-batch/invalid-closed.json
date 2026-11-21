@@ -1,0 +1,10 @@
+{
+  "postings": [],
+  "decisions": [],
+  "closed": [
+    {
+      "posting_id": "0123456789abcdef",
+      "closed_at": "tomorrow"
+    }
+  ]
+}
