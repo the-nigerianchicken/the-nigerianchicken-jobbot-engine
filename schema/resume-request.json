@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/resume-request.json",
+  "title": "ResumeRequest",
+  "description": "A person asking for a resume tailored to one posting (POST /api/postings/{id}/resume), with what to change when it's a redo.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "note"
+  ],
+  "properties": {
+    "note": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 1000
+    }
+  }
+}

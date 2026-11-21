@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/run-summary.json",
+  "title": "RunSummary",
+  "description": "One engine run, sent when it ends. It doubles as the heartbeat the watchdog reads.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "run_id",
+    "engine_version",
+    "started_at",
+    "finished_at",
+    "sources_due",
+    "sources_ok",
+    "failures",
+    "checked",
+    "postings_new",
+    "postings_changed",
+    "postings_closed",
+    "skipped_other_kinds",
+    "problems"
+  ],
+  "properties": {
+    "run_id": { "$ref": "defs.json#/$defs/uuid" },
+    "engine_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+" },
+    "started_at": { "$ref": "defs.json#/$defs/timestamp" },
+    "finished_at": { "$ref": "defs.json#/$defs/timestamp" },
+    "sources_due": { "$ref": "defs.json#/$defs/count" },
+    "sources_ok": { "$ref": "defs.json#/$defs/count" },
+    "failures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_id", "error", "consecutive"],
+        "properties": {
+          "source_id": { "$ref": "defs.json#/$defs/source_id" },
+          "error": { "type": "string", "minLength": 1, "maxLength": 500 },
+          "consecutive": { "type": "integer", "minimum": 1 }
+        }
+      }
+    },
+    "checked": {
+      "description": "When each source checked in this run was checked",
+      "type": "object",
+      "propertyNames": { "$ref": "defs.json#/$defs/source_id" },
+      "additionalProperties": { "$ref": "defs.json#/$defs/timestamp" }
+    },
+    "postings_new": { "$ref": "defs.json#/$defs/count" },
+    "postings_changed": { "$ref": "defs.json#/$defs/count" },
+    "postings_closed": { "$ref": "defs.json#/$defs/count" },
+    "skipped_other_kinds": { "$ref": "defs.json#/$defs/count" },
+    "skipped_by_person": {
+      "description": "Each person's jobs that their Kind of job skipped in this run, whoever else collected them, with examples",
+      "type": "object",
+      "propertyNames": { "$ref": "defs.json#/$defs/user_id" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["by_source", "examples"],
+        "properties": {
+          "by_source": {
+            "description": "How many each source checked in this run skipped",
+            "type": "object",
+            "propertyNames": { "$ref": "defs.json#/$defs/source_id" },
+            "additionalProperties": { "$ref": "defs.json#/$defs/count" }
+          },
+          "examples": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["company", "title", "why"],
+              "properties": {
+                "company": { "type": "string", "maxLength": 300 },
+                "title": { "type": "string", "maxLength": 300 },
+                "why": { "type": "string", "minLength": 1, "maxLength": 500 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "problems": {
+      "description": "What went wrong outside any one source, in plain words",
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["area", "message"],
+        "properties": {
+          "area": {
+            "enum": ["screen", "api", "store", "coverage", "jobs", "sources"]
+          },
+          "message": { "type": "string", "minLength": 1, "maxLength": 500 }
+        }
+      }
+    }
+  }
+}

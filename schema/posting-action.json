@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/posting-action.json",
+  "title": "PostingAction",
+  "description": "A tap on a posting: start applying, mark applied, not interested, show a filtered one anyway, or undo.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["action"],
+  "properties": {
+    "action": {
+      "enum": ["apply", "applied", "not_interested", "undo", "show_anyway"]
+    }
+  }
+}

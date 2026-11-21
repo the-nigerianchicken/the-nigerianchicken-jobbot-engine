@@ -1,0 +1,38 @@
+name: engine
+
+# One run of the engine. The app starts it every 5 minutes, and when someone queues a job, on the branch of
+# the instance it serves (staging or production); GitHub's own schedule drifts too far. Its state lives in
+# the app, and its log too: this page is public, so it shows only how the run went (run.sh).
+# Published from the private repo's infra/actions/engine.yml by tools/publish_engine.py.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One run per instance at a time; one more waits, and any start after that is the same run.
+concurrency:
+  group: engine-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: engine/uv.lock
+      - name: Install the engine
+        run: uv sync --project engine --frozen --no-dev --quiet
+      - name: Run
+        env:
+          # Each branch's own secret, or nothing: never the other instance's (run.sh then doesn't run).
+          JOBBOT_API_URL: ${{ github.ref_name == 'staging' && secrets.STAGING_API_URL || github.ref_name == 'production' && secrets.PRODUCTION_API_URL || '' }}
+          JOBBOT_ENGINE_TOKEN: ${{ github.ref_name == 'staging' && secrets.STAGING_ENGINE_TOKEN || github.ref_name == 'production' && secrets.PRODUCTION_ENGINE_TOKEN || '' }}
+          JOBBOT_STATE_DIR: ${{ runner.temp }}/state
+        run: bash run.sh

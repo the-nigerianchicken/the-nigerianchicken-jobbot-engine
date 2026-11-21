@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/coverage-report.json",
+  "title": "CoverageReport",
+  "description": "How the sources compare with the GitHub lists: what the lists had, what jobbot found, and every miss with what was done about it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["generated_at", "window_days", "lists", "list_postings", "found", "found_first", "missed"],
+  "properties": {
+    "generated_at": { "$ref": "defs.json#/$defs/timestamp" },
+    "window_days": { "type": "integer", "minimum": 1, "maximum": 31 },
+    "lists": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_id", "read_at", "error"],
+        "properties": {
+          "source_id": { "$ref": "defs.json#/$defs/source_id" },
+          "read_at": { "$ref": "defs.json#/$defs/nullable_timestamp" },
+          "error": { "type": ["string", "null"], "maxLength": 500 }
+        }
+      }
+    },
+    "list_postings": { "$ref": "defs.json#/$defs/count" },
+    "found": { "$ref": "defs.json#/$defs/count" },
+    "found_first": { "$ref": "defs.json#/$defs/count" },
+    "missed": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["company", "title", "url", "list_source_id", "action", "source_id"],
+        "properties": {
+          "company": { "$ref": "defs.json#/$defs/company" },
+          "title": { "type": "string", "minLength": 1, "maxLength": 300 },
+          "url": { "type": "string", "format": "uri" },
+          "list_source_id": { "$ref": "defs.json#/$defs/source_id" },
+          "action": { "enum": ["source_added", "asked", "unsupported", "none", "later"] },
+          "source_id": { "anyOf": [{ "$ref": "defs.json#/$defs/source_id" }, { "type": "null" }] }
+        }
+      }
+    },
+    "moved": {
+      "description": "For each board failing for more than a day: the source jobbot already reads its company from, or the board the company moved to",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_id", "covered_by", "to"],
+        "properties": {
+          "source_id": { "$ref": "defs.json#/$defs/source_id" },
+          "covered_by": { "anyOf": [{ "$ref": "defs.json#/$defs/source_id" }, { "type": "null" }] },
+          "to": {
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["kind", "org", "url"],
+                "properties": {
+                  "kind": { "$ref": "defs.json#/$defs/source_kind" },
+                  "org": { "type": "string", "minLength": 1, "maxLength": 200 },
+                  "url": { "type": "string", "format": "uri" }
+                }
+              },
+              { "type": "null" }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

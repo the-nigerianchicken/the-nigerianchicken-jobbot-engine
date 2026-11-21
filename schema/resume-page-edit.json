@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/resume-page-edit.json",
+  "title": "ResumePageEdit",
+  "description": "The resume's page as the person edited it (PUT /api/postings/{id}/resume/page). The engine builds a new PDF from it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "page"
+  ],
+  "properties": {
+    "page": {
+      "$ref": "defs.json#/$defs/resume_page"
+    }
+  }
+}

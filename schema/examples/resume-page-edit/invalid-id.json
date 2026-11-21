@@ -1,0 +1,56 @@
+{
+  "page": {
+    "name": "Pat Example",
+    "contact": [
+      "Town",
+      "pat@example.com"
+    ],
+    "sections": [
+      {
+        "title": "Education",
+        "entries": [
+          {
+            "id": "education",
+            "title": "B.Sc. Things, Some University",
+            "detail": "",
+            "dates": "2027",
+            "bullets": [
+              "GPA 4.0"
+            ],
+            "fixed": true
+          }
+        ]
+      },
+      {
+        "title": "Experience",
+        "entries": [
+          {
+            "id": "has spaces",
+            "title": "Engineer Intern",
+            "detail": "Big Co, Toronto",
+            "dates": "2026",
+            "bullets": [
+              "Built **3** things"
+            ],
+            "fixed": false
+          }
+        ]
+      },
+      {
+        "title": "Skills",
+        "entries": [
+          {
+            "id": "skills",
+            "title": "",
+            "detail": "",
+            "dates": "",
+            "bullets": [
+              "Languages: Python, Go"
+            ],
+            "fixed": false
+          }
+        ]
+      }
+    ]
+  }
+}
