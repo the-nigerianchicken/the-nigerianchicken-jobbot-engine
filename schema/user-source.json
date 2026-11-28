@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/user-source.json",
+  "title": "UserSource",
+  "description": "One person's use of a source, and how often they want it checked.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["user_id", "source_id", "frequency_minutes", "paused"],
+  "properties": {
+    "user_id": { "$ref": "defs.json#/$defs/user_id" },
+    "source_id": { "$ref": "defs.json#/$defs/source_id" },
+    "frequency_minutes": { "enum": [5, 15, 60, 1440] },
+    "paused": { "type": "boolean" }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/source.json",
+  "title": "Source",
+  "description": "A board or list jobbot checks. Shared: one check serves everyone who uses it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "kind",
+    "org",
+    "company",
+    "url",
+    "added_at",
+    "added_by",
+    "status",
+    "failing_since",
+    "last_error"
+  ],
+  "properties": {
+    "id": { "$ref": "defs.json#/$defs/source_id" },
+    "kind": { "$ref": "defs.json#/$defs/source_kind" },
+    "org": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "company": { "$ref": "defs.json#/$defs/company" },
+    "url": { "type": "string", "format": "uri" },
+    "added_at": { "$ref": "defs.json#/$defs/timestamp" },
+    "added_by": { "enum": ["import", "person", "missed_posting"] },
+    "status": { "enum": ["ok", "failing", "unknown"] },
+    "failing_since": { "$ref": "defs.json#/$defs/nullable_timestamp" },
+    "last_error": { "type": ["string", "null"], "maxLength": 500 }
+  }
+}

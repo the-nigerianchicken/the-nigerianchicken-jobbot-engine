@@ -1,0 +1,120 @@
+{
+  "id": "0b9c8d7e-6f5a-4b3c-9d2e-1f0a9b8c7d6e",
+  "user_id": "u_test",
+  "kind": "preview_rules",
+  "status": "done",
+  "created_at": "2026-10-02T10:00:00Z",
+  "started_at": "2026-10-02T10:00:04Z",
+  "finished_at": "2026-10-02T10:00:11Z",
+  "input": {
+    "settings": {
+      "version": 3,
+      "updated_at": "2026-10-02T09:00:00Z",
+      "details": {
+        "home_country": "Ireland",
+        "citizenships": [
+          "Ireland"
+        ],
+        "needs_sponsorship_outside_home": true,
+        "security_clearance": false,
+        "degree": "bachelor",
+        "field_of_study": "Computer Science",
+        "graduation_month": "2028-05"
+      },
+      "rules": {
+        "kind": {
+          "on": true,
+          "chosen": [
+            "Internship",
+            "Co-op"
+          ],
+          "words": []
+        },
+        "companies": {
+          "on": true,
+          "words": [
+            "Initech"
+          ]
+        },
+        "ruled_out": {
+          "on": true,
+          "chosen": [
+            "Senior"
+          ],
+          "words": [
+            "clinical"
+          ]
+        },
+        "roles": {
+          "on": true,
+          "chosen": [
+            "Software"
+          ],
+          "words": []
+        },
+        "places": {
+          "on": true,
+          "chosen": [
+            "Ireland"
+          ],
+          "remote": true
+        },
+        "terms": {
+          "on": true,
+          "chosen": [
+            "Summer 2027"
+          ]
+        },
+        "sponsorship": {
+          "on": true,
+          "words": []
+        },
+        "age": {
+          "on": true,
+          "days": 14
+        },
+        "repeats": {
+          "on": true
+        }
+      },
+      "alert_rules": [
+        {
+          "id": "r_alert_ml",
+          "name": "Machine learning",
+          "enabled": true,
+          "field": "title",
+          "words": [
+            "machine learning"
+          ]
+        }
+      ],
+      "display": {
+        "order": "newest",
+        "grouping": "none",
+        "theme": "system"
+      },
+      "misses": "add",
+      "quiet_hours": {
+        "enabled": false,
+        "start": "22:00",
+        "end": "07:00",
+        "time_zone": "Europe/Dublin"
+      }
+    }
+  },
+  "result": {
+    "window_days": 30,
+    "leaving_new": [
+      {
+        "posting_id": "0123456789abcdef",
+        "company": "Example Robotics",
+        "title": "Software Engineering Intern, Summer 2027",
+        "rule_name": "Places"
+      }
+    ],
+    "newly_flagged": [],
+    "returning": [],
+    "collected_more": 0
+  },
+  "error": null
+}

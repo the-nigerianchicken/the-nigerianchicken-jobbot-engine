@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/posting-action.json",
+  "title": "PostingAction",
+  "description": "A tap on a posting: start applying, mark applied, not interested, show a filtered one anyway, or undo.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["action"],
+  "properties": {
+    "action": {
+      "enum": ["apply", "applied", "not_interested", "undo", "show_anyway"]
+    },
+    "from": {
+      "description": "For an undo: the list the decision being undone put the posting in. If it has left that list since, the undo is refused, so it never reverts a later decision.",
+      "enum": ["new", "applying", "applied", "filtered", "not_interested"]
+    }
+  }
+}
