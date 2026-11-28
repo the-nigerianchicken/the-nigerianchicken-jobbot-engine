@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/defs.json",
+  "title": "Shared definitions",
+  "description": "Pieces the record schemas share. Not a record itself.",
+  "$defs": {
+    "source_kind": {
+      "enum": [
+        "workday",
+        "greenhouse",
+        "ashby",
+        "lever",
+        "amazon",
+        "apple",
+        "google",
+        "microsoft",
+        "shopify",
+        "uber",
+        "netflix",
+        "github_list",
+        "jobbank",
+        "linkedin"
+      ]
+    },
+    "source_id": {
+      "description": "kind:org, the same key the old engine used for a board",
+      "type": "string",
+      "pattern": "^(workday|greenhouse|ashby|lever|amazon|apple|google|microsoft|shopify|uber|netflix|github_list|jobbank|linkedin):\\S{1,200}$"
+    },
+    "posting_id": {
+      "description": "The old engine's uid: the first 16 hex characters of sha1 over source:org:raw_id-or-url",
+      "type": "string",
+      "pattern": "^[0-9a-f]{16}$"
+    },
+    "user_id": { "type": "string", "pattern": "^u_[a-z0-9]{1,32}$" },
+    "rule_id": { "type": "string", "pattern": "^r_[a-z0-9_]{1,40}$" },
+    "uuid": { "type": "string", "format": "uuid" },
+    "timestamp": {
+      "description": "RFC 3339 in UTC, with a Z suffix",
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "nullable_timestamp": { "anyOf": [{ "$ref": "#/$defs/timestamp" }, { "type": "null" }] },
+    "month": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])$" },
+    "company": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "count": { "type": "integer", "minimum": 0 },
+    "words": {
+      "description": "At least one word or phrase, matched as whole words",
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 100 },
+      "minItems": 1,
+      "maxItems": 500
+    },
+    "word_list": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 100 },
+      "maxItems": 500
+    },
+    "rule_field": { "enum": ["title", "description", "company", "place"] },
+    "posting_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["posting_id", "company", "title"],
+      "properties": {
+        "posting_id": { "$ref": "#/$defs/posting_id" },
+        "company": { "$ref": "#/$defs/company" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 300 }
+      }
+    },
+    "posting_ref_with_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["posting_id", "company", "title", "rule_name"],
+      "properties": {
+        "posting_id": { "$ref": "#/$defs/posting_id" },
+        "company": { "$ref": "#/$defs/company" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "rule_name": { "type": "string", "minLength": 1, "maxLength": 80 }
+      }
+    },
+    "resume_page": {
+      "title": "ResumePage",
+      "description": "A made resume as plain text, for showing and editing in the app: the header, then each section's entries. A fixed entry (education, an extra section) is shown as it is and always built from the kit; the others' bullets are the person's to change, and a rebuild sets them in the order given. A skills row is one bullet, its label before the first colon.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "contact",
+        "sections"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "contact": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "maxLength": 300
+          }
+        },
+        "sections": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "title": "ResumePageSection",
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "title",
+              "entries"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "maxLength": 100
+              },
+              "entries": {
+                "type": "array",
+                "maxItems": 30,
+                "items": {
+                  "title": "ResumeEntry",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "id",
+                    "title",
+                    "detail",
+                    "dates",
+                    "bullets",
+                    "fixed"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9_:.-]{1,120}$"
+                    },
+                    "title": {
+                      "type": "string",
+                      "maxLength": 300
+                    },
+                    "detail": {
+                      "type": "string",
+                      "maxLength": 500
+                    },
+                    "dates": {
+                      "type": "string",
+                      "maxLength": 100
+                    },
+                    "bullets": {
+                      "type": "array",
+                      "maxItems": 30,
+                      "items": {
+                        "type": "string",
+                        "maxLength": 2000
+                      }
+                    },
+                    "fixed": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "resume_build": {
+      "title": "ResumeBuild",
+      "description": "How the engine set a made page, so an edited one is built the same way without asking Claude: the line spacing, whether end-of-line punctuation hangs into the margin, the extra sections, and which of a role's company names it shows.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rhythm",
+        "hang",
+        "extras",
+        "org"
+      ],
+      "properties": {
+        "rhythm": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 3
+        },
+        "hang": {
+          "type": "boolean"
+        },
+        "extras": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "org": {
+          "type": "object",
+          "maxProperties": 30,
+          "additionalProperties": {
+            "type": "string",
+            "maxLength": 100
+          }
+        }
+      }
+    }
+  }
+}

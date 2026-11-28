@@ -1,0 +1,6 @@
+{
+  "kind": "check_source",
+  "input": {
+    "url": "https://boards.greenhouse.io/examplerobotics"
+  }
+}

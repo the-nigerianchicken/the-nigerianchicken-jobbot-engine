@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/resume-change.json",
+  "title": "ResumeChange",
+  "description": "A person asking for one change to the resume's page as it is now (POST /api/postings/{id}/resume/change). Only the lines it changes move; the rest stays as it is.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "ask"
+  ],
+  "properties": {
+    "ask": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "pattern": "\\S"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "user_id": "u_test",
+  "source_id": "greenhouse:example-robotics",
+  "frequency_minutes": 60,
+  "paused": false
+}

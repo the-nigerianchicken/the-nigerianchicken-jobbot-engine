@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/posting.json",
+  "title": "Posting",
+  "description": "A collected posting. Shared: everyone's decisions about it live in decisions and user_postings.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "source_id",
+    "external_id",
+    "company",
+    "title",
+    "location",
+    "url",
+    "apply_url",
+    "posted_at",
+    "deadline",
+    "remote",
+    "terms",
+    "description",
+    "first_seen_at",
+    "closed_at",
+    "content_hash"
+  ],
+  "properties": {
+    "id": { "$ref": "defs.json#/$defs/posting_id" },
+    "source_id": { "$ref": "defs.json#/$defs/source_id" },
+    "external_id": { "type": "string", "minLength": 1, "maxLength": 300 },
+    "company": { "$ref": "defs.json#/$defs/company" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 300 },
+    "location": { "type": "string", "maxLength": 300 },
+    "url": { "type": "string", "format": "uri" },
+    "apply_url": { "type": "string", "format": "uri" },
+    "posted_at": {
+      "description": "The employer's own timestamp, never a scraper's",
+      "$ref": "defs.json#/$defs/nullable_timestamp"
+    },
+    "deadline": { "$ref": "defs.json#/$defs/nullable_timestamp" },
+    "remote": { "type": "boolean" },
+    "terms": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 50 },
+      "maxItems": 10
+    },
+    "description": { "type": "string", "maxLength": 20000 },
+    "first_seen_at": { "$ref": "defs.json#/$defs/timestamp" },
+    "closed_at": { "$ref": "defs.json#/$defs/nullable_timestamp" },
+    "content_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

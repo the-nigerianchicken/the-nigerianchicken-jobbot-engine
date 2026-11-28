@@ -1,0 +1,16 @@
+{
+  "sources": [
+    {
+      "id": "greenhouse:example-robotics",
+      "org": "example-robotics",
+      "company": "Example Robotics",
+      "url": "https://boards.greenhouse.io/example-robotics",
+      "added_at": "2026-10-02T12:00:00Z",
+      "added_by": "import",
+      "status": "ok",
+      "failing_since": null,
+      "last_error": null
+    }
+  ],
+  "user_sources": []
+}

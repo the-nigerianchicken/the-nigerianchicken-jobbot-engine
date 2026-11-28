@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/resume-rules.json",
+  "title": "ResumeRules",
+  "description": "A person's rules for writing their resumes, the PIPELINE.md of their resume kit, as they edit it in Settings (PUT /api/resume-kit/rules). Only that file of the kit changes, and only if the kit last changed when updated_at says, so a stale screen cannot overwrite newer rules. The cap keeps the kit's one stored statement within D1's 100 KB limit.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["rules", "updated_at"],
+  "properties": {
+    "rules": {
+      "type": "string",
+      "maxLength": 20000
+    },
+    "updated_at": {
+      "type": "string",
+      "minLength": 1,
+      "description": "When the kit last changed as the screen knows it: the updated_at it last read or saved."
+    }
+  }
+}

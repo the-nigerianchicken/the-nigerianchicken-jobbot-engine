@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jobbot.invalid/schema/resume-job.json",
+  "title": "ResumeJob",
+  "description": "The answer to the engine asking for a resume to make (GET /engine/resumes/next): the oldest queued one, or none. The kit is the person's own files (their facts, rules, LaTeX class, checker and page limits), kept only in the app. An edited page comes with page and build: the engine sets it as it is, without asking Claude. A change comes with ask, and the page as it is now with how it was set: the engine asks Claude for only the lines the ask changes and sets the page again with them.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "resume"
+  ],
+  "properties": {
+    "resume": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/resume"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "resume": {
+      "title": "ResumeWork",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "note",
+        "posting",
+        "kit"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "defs.json#/$defs/uuid"
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 1000
+        },
+        "posting": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "company",
+            "title",
+            "location",
+            "url",
+            "description"
+          ],
+          "properties": {
+            "company": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          }
+        },
+        "kit": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "page": {
+          "anyOf": [
+            {
+              "$ref": "defs.json#/$defs/resume_page"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "build": {
+          "anyOf": [
+            {
+              "$ref": "defs.json#/$defs/resume_build"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ask": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 1000
+        }
+      }
+    }
+  }
+}
